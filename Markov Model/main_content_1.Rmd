@@ -5,7 +5,6 @@ date: "14/09/2020"
 output:
   pdf_document: default
   html_document: default
-bibliography: biblio_1.bib
 ---
 
 ```{r setup, include=FALSE}
@@ -39,7 +38,7 @@ Throughout the course we will generally follow the coding framework suggested by
 
 The simple Markov model that we'll build in this session is referred to as the sick-sicker model. It has four health states; healthy (H), sick (S1), sicker (S2), and dead (D). All individuals are assumed to be healthy at the start of the time horizon. Individuals that are healthy can remain healthy, become sick or die. Individuals that are sick can remain sick, return to healthy, get sicker or die. Individuals that are sicker can only remain sicker or die. The transition probabilities, the probability of moving from one health state to another during a cycle, are fixed over the entire time horizon. A diagram of the model is shown below:
 
-![Sick Sicker Model structure](images/sick_sicker_diagram.png){width=300px height=200px}
+<!-- ![Sick Sicker Model structure](images/sick_sicker_diagram.png){width=300px height=200px} -->
 
 ## Input parameters
 
@@ -237,7 +236,7 @@ Matrix multiplication is represented by the %*% expression using in the R code. 
 
 This is much faster than multiplying cells one by one and summing.
 
-![Matrix Multiplication](images/matrix_mult_plot.png){width=800px height=200px}
+<!-- ![Matrix Multiplication](images/matrix_mult_plot.png){width=800px height=200px} -->
 
 
 

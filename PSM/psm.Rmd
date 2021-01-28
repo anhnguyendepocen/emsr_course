@@ -4,7 +4,7 @@ output: html_notebook
 ---
 
 
-# Recap
+## Recap
 
   * In a Partitioned Survival Model (PSM), individuals reside in one of a series of mutually exclusive and jointly exhaustive health states. 
   
@@ -16,7 +16,7 @@ output: html_notebook
   
   
 
-# TUTORIAL
+## TUTORIAL
 
   Suppose you have been asked to evaluate a new treatment 'Supimab', against the standard-of-care treatment (SOC). The model has the following specifications:
 
@@ -42,7 +42,7 @@ library(kableExtra)
 
 tbl <- t(cbind(
 
-# suoimab
+## suoimab
 "costs drug" = 45000,
 "costs administration" = 2000,
 "OS (Weibull):"="",
@@ -53,7 +53,7 @@ tbl <- t(cbind(
 "scale" = 0.4408,
 
 
-# soc
+## soc
 "drug costs" = 22000,
 "OS (Weibull)" ="",
 "constant" = 0.4583,
@@ -62,7 +62,7 @@ tbl <- t(cbind(
 "constant" = 1.8498,
 "scale" = 0.4337,
 
-# general
+## general
 "HRQoL PFS" = 0.90,
 "HRQoL PPS"  = 0.50,
 "costs PPS" = 5000,
@@ -78,22 +78,22 @@ kable(tbl,caption = "Parameters") %>%
 ```
 
 
-## Setup
+### Setup
 
 ```{r}
-# load packages
-  # install.packages("flexsurv")
-  # install.packages("ggplot2")
+## load packages
+  ## install.packages("flexsurv")
+  ## install.packages("ggplot2")
   library(flexsurv)
   library(ggplot2)
 
-# set horizon and time intervals
+## set horizon and time intervals
   time_steps <- seq(from = 0, to = 10, by = 0.5)
-  # use 0.5 to illustrate model
-  # use <0.01 for higher accuracy
+  ## use 0.5 to illustrate model
+  ## use <0.01 for higher accuracy
 
 
-# S(t) Weibull function
+## S(t) Weibull function
   stWB <- function(const,scale,time){
     res <- exp( -const * (time^exp(scale)) )
     return(res)
@@ -104,49 +104,49 @@ kable(tbl,caption = "Parameters") %>%
 
 
 ```{r}
-# SUPIMAB survival curves -------
+## SUPIMAB survival curves -------
 
-  # OS
+  ## OS
   os_supi_wb_const <- 0.3074
   os_supi_wb_scale <- 0.3536
   St_supi_os <-  stWB(os_supi_wb_const,  os_supi_wb_scale,  time_steps)
 
-  # PFS
+  ## PFS
   pfs_supi_wb_const <- 0.9290
   pfs_supi_wb_scale <- 0.4408
   St_supi_pfs <- stWB(pfs_supi_wb_const, pfs_supi_wb_scale, time_steps)
   
-  # PPS = OS - PFS
+  ## PPS = OS - PFS
   St_supi_pps <- St_supi_os - St_supi_pfs
   
-  # dead = 1 - OS
+  ## dead = 1 - OS
   St_supi_dead <- 1 - St_supi_os
   
   
-# SOC survival curves -------
+## SOC survival curves -------
   
-  # OS
+  ## OS
   os_soc_wb_const <- 0.4583
   os_soc_wb_scale <- 0.3249
   St_soc_os <-  stWB(os_soc_wb_const,  os_soc_wb_scale,  time_steps)
   
-  # PFS
+  ## PFS
   pfs_soc_wb_const <- 1.8498
   pfs_soc_wb_scale <- 0.4337
   St_soc_pfs <- stWB(pfs_soc_wb_const, pfs_soc_wb_scale, time_steps)
   
-  # PPS = OS - PFS
+  ## PPS = OS - PFS
   St_soc_pps <- St_soc_os - St_soc_pfs
 
-  # dead = 1 - OS
+  ## dead = 1 - OS
   St_soc_dead <- 1 - St_soc_os
 ```
 
 
-# Visualise fitted survival curves with ggplot2
+## Visualise fitted survival curves with ggplot2
 
 ```{r}
-  # proportion in state
+  ## proportion in state
     pm_supi <- ggplot() +
       geom_line(aes(x= time_steps, y = St_supi_os, col = "OS")) +
       geom_line(aes(x= time_steps, y = St_supi_pfs, col = "PFS")) +
@@ -159,7 +159,7 @@ kable(tbl,caption = "Parameters") %>%
   pm_supi
 
   
-    # time spend in each state
+    ## time spend in each state
     pm_soc <-  ggplot() +
       geom_line(aes(x= time_steps, y = St_soc_os, col = "OS")) +
       geom_line(aes(x= time_steps, y = St_soc_pfs, col = "PFS")) +
@@ -175,19 +175,19 @@ kable(tbl,caption = "Parameters") %>%
   
 
 
-# visualise fitted survival curves
+## visualise fitted survival curves
   ggplot() +
-    # SOC
+    ## SOC
     geom_point(aes(x = time_steps, y = St_soc_pfs, col = "SOC")) +
     geom_line(aes(x = time_steps, y = St_soc_pfs, linetype = "PFS", col = "SOC")) +
     geom_point(aes(x = time_steps, y = St_soc_os, col = "SOC")) +
     geom_line(aes(x = time_steps, y = St_soc_os, linetype = "OS",col = "SOC")) +
-    # supimab
+    ## supimab
     geom_point(aes(x = time_steps, y = St_supi_pfs, col = "Supimab")) +
     geom_line(aes(x = time_steps, y = St_supi_pfs, linetype = "PFS",col = "Supimab")) +
     geom_point(aes(x = time_steps, y = St_supi_os, col = "Supimab")) +
     geom_line(aes(x = time_steps, y = St_supi_os, linetype = "OS",col = "Supimab")) +
-    # labels, axes, and legend
+    ## labels, axes, and legend
     ggtitle("Supimab and SOC survival curves") +
     ylab("Cumulative survival") +
     scale_x_continuous(name = "Years", breaks = seq(0,10,2)) +
@@ -197,12 +197,12 @@ kable(tbl,caption = "Parameters") %>%
     theme_minimal() +
     theme(legend.position = "bottom")
   
-  # visualise AUC PFS Supimab
+  ## visualise AUC PFS Supimab
   ggplot() +
     geom_ribbon(aes(x = time_steps, ymin = 0,ymax = St_supi_pfs, fill = "PFS")) +
     geom_line(aes(x = time_steps, y = St_supi_pfs)) +
     geom_line(aes(x = time_steps, y = St_supi_os)) +
-    # labels, axes, and legend
+    ## labels, axes, and legend
     ggtitle("PFS AUC - Supimab ") +
     ylab("Cumulative survival") +
     scale_x_continuous(name = "Years", breaks = seq(0,10,2)) +
@@ -212,13 +212,13 @@ kable(tbl,caption = "Parameters") %>%
     theme_minimal() +
     theme(legend.position = "bottom")
   
-  # visualise AUC PPS + PFS Supimab
+  ## visualise AUC PPS + PFS Supimab
   ggplot() +
     geom_ribbon(aes(x = time_steps, ymin = 0,ymax = St_supi_pfs, fill = "PFS")) +
     geom_ribbon(aes(x = time_steps, ymin = St_supi_pfs,ymax = St_supi_os, fill = "PPS"), alpha = 0.7) +
     geom_line(aes(x = time_steps, y = St_supi_pfs)) +
     geom_line(aes(x = time_steps, y = St_supi_os)) +
-    # labels, axes, and legend
+    ## labels, axes, and legend
     ggtitle("PFS+PPS AUC - Supimab ") +
     ylab("Cumulative survival") +
     scale_x_continuous(name = "Years", breaks = seq(0,10,2)) +
@@ -230,13 +230,13 @@ kable(tbl,caption = "Parameters") %>%
 ```
 
 
-## Compute AUC
+### Compute AUC
 
 > trapezium rule
 > AUC = ( (y2+y1)/2)*(x2 - x1)
 
 ```{r echo=FALSE}
-# trapeziums illustration
+## trapeziums illustration
 vline_df <- data.frame(cbind(
   x = rep(time_steps,2),
   y = c(cbind(0,St_supi_pfs)),
@@ -272,22 +272,22 @@ ggplot() +
 
 
 ```{r}
-# example for one trapezium
+## example for one trapezium
 ((St_supi_pps[3] + St_supi_pps[2]) / 2 ) * (time_steps[3] - time_steps[2])
 ```
 
 
 ```{r}
-# build your own AUC function
-# AUC = ((y2+y1)/2)*(x2 - x1)
+## build your own AUC function
+## AUC = ((y2+y1)/2)*(x2 - x1)
 myAUC <- function(x1,x2,y1,y2){
   res <- ((y2+y1)/2)*(x2 - x1)
   return(res)
 }
 
-# loop 1 - through 1 St obj
+## loop 1 - through 1 St obj
 mat_auc <- c()
-for(t in 1:(length(time_steps) - 1 )){   # lenght - 1 to avoid NA 
+for(t in 1:(length(time_steps) - 1 )){   ## lenght - 1 to avoid NA 
   auc_pps <- myAUC(
     x1 = time_steps[t],
     x2 = time_steps[t+1],
@@ -298,21 +298,21 @@ for(t in 1:(length(time_steps) - 1 )){   # lenght - 1 to avoid NA
 }
 
 head(mat_auc)
-# tail(mat_auc)
+## tail(mat_auc)
 sum(mat_auc)
 
-# side step:
-  # we could have used a package instead
-  # install.packages("DescTools")
+## side step:
+  ## we could have used a package instead
+  ## install.packages("DescTools")
   library(DescTools)
   ?AUC
-  AUC # much shorter, but hard to read code
+  AUC ## much shorter, but hard to read code
   AUC(x=time_steps, y=St_supi_pps, method="trapezoid")
 
   
   
-# AUC for all states:
-# combine vectors of cumulative survival probabilities
+## AUC for all states:
+## combine vectors of cumulative survival probabilities
 mat_surv <- cbind(
   St_supi_pfs,St_supi_pps,St_supi_dead,
   St_soc_pfs,St_soc_pps,St_soc_dead
@@ -323,7 +323,7 @@ mat_surv
 mat_auc <- c()
 for(i in 1:ncol(mat_surv)){
   temp_auc <-c()
-  for(t in 1:(length(time_steps) - 1 )){   # lenght - 1 to avoid NA 
+  for(t in 1:(length(time_steps) - 1 )){   ## lenght - 1 to avoid NA 
     temp_auc_step <- myAUC(
       x1 = time_steps[t],
       x2 = time_steps[t+1], 
@@ -349,37 +349,37 @@ ggplot(auc_df, aes(fill=state, y=auc, x=time)) +
     facet_wrap(~trt) +
     theme_minimal()
 
-sum(mat_auc) # total auc check
-rowSums(mat_auc) # time stpes check
-colSums(mat_auc) # col auc sums
+sum(mat_auc) ## total auc check
+rowSums(mat_auc) ## time stpes check
+colSums(mat_auc) ## col auc sums
 ```
 
 
 
 
-## HRQoL and costs
+### HRQoL and costs
 ```{r}
-# utilities
+## utilities
 u_pfs <- 0.90
 u_pps <-  0.50
 
-# costs soc
+## costs soc
 c_PFS_soc <- 22000
 
-# costs supi
+## costs supi
 c_drug_supi <- 45000
 c_admin_supi <- 2000
 c_PFS_supi <- c_drug_supi + c_admin_supi
 
-# costs supportive care for post-progression
+## costs supportive care for post-progression
 c_support <- 5000
 ```
 
 
-## outcomes
+### outcomes
 ```{r}
 
-# head(mat_auc)
+## head(mat_auc)
 
 c_pfs_supi <- mat_auc[,"St_supi_pfs"] * (c_PFS_supi)
 c_pps_supi <- mat_auc[,"St_supi_pps"] * c_support
@@ -391,11 +391,11 @@ q_pps_supi <- mat_auc[,"St_supi_pps"] * u_pfs
 q_pfs_soc <- mat_auc[,"St_soc_pfs"] * u_pfs
 q_pps_soc <- mat_auc[,"St_soc_pps"] * u_pps
 
-# # shoter
-# c_vector <- c(c_PFS_supi, c_support, 0, c_PFS_soc, c_support, 0)
-# t(apply(mat_auc,1,function(x)  x* c_vector))
-# u_vector <- rep(c(u_pfs,u_pps,0),2)
-# t(apply(mat_auc,1,function(x)  x* u_vector))
+## ## shoter
+## c_vector <- c(c_PFS_supi, c_support, 0, c_PFS_soc, c_support, 0)
+## t(apply(mat_auc,1,function(x)  x* c_vector))
+## u_vector <- rep(c(u_pfs,u_pps,0),2)
+## t(apply(mat_auc,1,function(x)  x* u_vector))
 
 c_mat <- cbind(
   c_pfs_supi,c_pps_supi, 
@@ -408,7 +408,7 @@ q_mat <- cbind(
 )
 ```
 
-# discounting
+## discounting
 x /(1 + disc_rate) ^ time
 e.g. cost /(1.035) ^ 0.05
 
@@ -418,8 +418,8 @@ myDiscounter <- function(x, time, disc_rate = 0.035){
  return(res)
 }
 
-# c_pfs_supi_disc <-  myDiscounter(x = c_pfs_supi,time = time_steps[-1])
-# head(c_pfs_supi_disc)
+## c_pfs_supi_disc <-  myDiscounter(x = c_pfs_supi,time = time_steps[-1])
+## head(c_pfs_supi_disc)
 
 c_mat_disc <- apply(c_mat,2,myDiscounter,time = time_steps[-1])
 head(c_mat_disc)
@@ -430,30 +430,30 @@ head(q_mat_disc)
 
 
 
-# Results
+## Results
 
 ```{r}
-# costs supimab
+## costs supimab
 tc_supi <- sum(c_mat_disc[,c("c_pfs_supi","c_pps_supi")])
 tc_supi
-# qalys supimab
+## qalys supimab
 tq_supi <-sum(q_mat_disc[,c("q_pfs_supi","q_pps_supi")])
 tq_supi
-# costs soc
+## costs soc
 tc_soc <- sum(c_mat_disc[,c("c_pfs_soc","c_pps_soc")])
 tc_soc
-# qalys soc
+## qalys soc
 tq_soc <- sum(q_mat_disc[,c("q_pfs_soc","q_pps_soc")])
 tq_soc
 
-# ICER
+## ICER
 mean( (tc_supi - tc_soc) / (tq_supi - tq_soc) )
 
-# INB at 20k
+## INB at 20k
 inb <-  (tq_supi - tq_soc) * 20000 - (tc_supi - tc_soc)
 inb
 
-# INB at 20k
+## INB at 20k
 inb <-  (tq_supi - tq_soc) * 20000 - (tc_supi - tc_soc)
 inb
 ```
@@ -463,7 +463,7 @@ inb
 
 <br><br>
 
-### Additional exercises:
+#### Additional exercises:
 
 1. Build a function `calcInb` to compute the INB for any wtp
   - the function should task as arguments the total costs and qalys of two different treatments
