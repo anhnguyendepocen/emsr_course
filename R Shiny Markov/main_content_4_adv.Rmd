@@ -1,0 +1,854 @@
+---
+title: "Session 4- Advanced Shiny"
+author: "Robert Smith, Paul Schneider & Sarah Bates"
+date: "14/09/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Introduction
+
+In the previous session on Shiny we created the simplest possible functional example of a user-interface for a health economic model constructed in R. This session is designed to teach some of the more advanced topics that may help improve the usability, aesthetics and functionality of the application. We will focus on a single, more developed ShinyApp, describing the code layout and focusing on snipets of code with different purposes. 
+
+A new free open access book, [Mastering Shiny](https://mastering-shiny.org/) by Hadley Wickham, provides a good grounding in this advanced functionality. We will refer to this book, providing links to its simple reproducible examples throughout this session. 
+
+## Objectives
+
+- Understand the structure of a shinyDashboard app.
+- know how to format Shiny in CSS/HTML and add images & branding.
+- know how to incorporate ggplot graphs.
+- know how to upload data to R-Shiny.
+- know how to download plots and charts from R-Shiny.
+
+
+## Structure of a Shiny App
+
+As before, the app is made up of two parts, the user interface and the server.
+
+```{r, eval=FALSE}
+
+shinyApp(ui = ui,server = server)
+
+```
+
+### User Interface
+The user interface is a *dashboardPage* with several parts: a header, sidebar, body, skin colour and title.
+
+```{r, eval=FALSE}
+
+ui <- dashboardPage(
+  
+  header = header1,
+  
+  sidebar = sidebar1,
+  
+  body = body1,
+  
+  skin = "blue",
+  
+  title = "Sick Sicker Model in Shiny"
+  
+)
+
+```
+
+#### Header
+
+The header is simple, it has a title and a width.
+
+```{r, eval = F}
+
+header1 = dashboardHeader(title = "Sick Sicker Model in Shiny",
+                          titleWidth = 400)
+
+```
+
+#### Sidebar
+
+The sidebar width is specified in the first argument. The sidebar Menu includes numerous different items, with data to upload, parameter inputs, number of simulations and finally an action button.
+
+
+```{r, eval=FALSE}
+
+sidebar1 = dashboardSidebar(width = 400,
+                            
+                          sidebarMenu(
+                              
+                          # Input CSV of Treat Utililities
+                           menuItem(text = "Upload data",
+                           h4("Input CSV of Treatment Utilities"),
+                           checkboxInput("use_CSV",label = "Overwrite Treatment Utilities with CSV"),
+                           fileInput("file1", "Choose CSV File", accept = ".csv"),
+                           checkboxInput("header", "Header", TRUE)
+                           ),
+                           
+                           # Treatment Cost
+                           menuItem(text = "Parameter Inputs",
+                                    startExpanded = T,
+                                    numericInput(inputId = "SI_c_Trt",      # id of input, used in server
+                                        label = "Treatment Cost",  # label next to numeric input
+                                        value = 200,               # initial value
+                                        min = 0,                   # minimum value allowed
+                                        max = 400),
+                                    sliderInput(inputId = "SI_n_age_init",  # id of input, used in server
+                                                label = "Initial Age",      # label next to numeric input
+                                                value = 25,                 # initial value
+                                                min = 10,                   # minimum value allowed
+                                                max = 80),
+                                    numericInput(inputId = "lambda",
+                                                 label = "WTP Threshold",
+                                                 value = 20000)
+                           ),
+                           
+                           # Number of Simulations
+                           menuItem(text = "Input Number of PSA runs",
+                                    startExpanded = T,
+                                    numericInput(inputId = "SI_n_sim",      # id of input, used in server
+                                        label = "Select PSA runs",        # label next to numeric input
+                                        value = 1000,              # initial value
+                                        min = 0,                   # minimum value allowed
+                                        max = 400)
+                           
+                           ),
+                           
+                           br(),
+                           br(),
+                           
+                           # action button
+                           fluidRow(
+                             column(width = 12,
+                             actionButton(inputId = "run_model",     # id of action button, used in server
+                                          label   = "Run model",
+                                          width = "300px") # customised button using CSS  
+                           ))
+                           
+                           
+                        
+                           
+                            ) # close sideBarmenu
+                           
+)  # close sidebar pa
+                 
+```
+
+#### Body
+
+The body contains a single first row, with a single box which has no title and is 1200 pixels wide and 1000 pixels long. Within this box there are several different tabs, each with their own title and some items (e.g. tables, plots, buttons). These tabs include a wide variety of items.
+
+We use plotOutput and tableOutput as before for plots and tables.
+
+We also use [tags](https://shiny.rstudio.com/articles/tag-glossary.html) to create downloadButtons, an iframes, web links, a footer and embedded images.
+
+```{r, eval = F}
+
+body1 = dashboardBody(# open dashboardbody
+  
+  fluidRow(
+    tabBox(title = "",
+           width = "1200px",
+           height = "1200px",
+    
+    # as above but results table
+    tabPanel(title = "Results Table",
+             tableOutput(outputId = "SO_icer_table")
+            ), # # end box, fluidrow and tab item
+    
+    # as above but CE plane
+    tabPanel(title = "Cost-effectiveness Plane",
+             plotOutput(outputId = "SO_CE_plane"),
+             downloadButton(outputId = 'cep', label = "Download Plot"),
+             downloadButton(outputId = "downloadData", label =  "Download Data")
+      ), # end box, fluidrow and tab item
+    
+    tabPanel(title = "CEAC",
+             plotOutput(outputId = "SO_ceac"),
+             downloadButton(outputId = 'ceac', label = "Download Plot")#,
+             #downloadButton(outputId = "downloadData", label =  "Download Data")
+    ), # end box, fluidrow and tab item
+    
+    
+    # this is a tab which shows a single table
+    # referenced as contents in the server
+    tabPanel(title = "Uploaded data",
+             "Uploaded data (if any) can be seen below:",
+             br(),br(),
+             tableOutput("contents")
+    ), # end box, fluidrow and tab item
+      
+      # in this tab we use an i-frame to show another website.
+      # here I show the classic Rick Astley song ' Never Gonna Give You Up'
+      # however you could include promotional material
+      # or a video explaining how to use the tool
+    tabPanel(title = "Further Information",
+             br(),
+             tags$blockquote("Rickrolling, alternatively rick-rolling, is a prank and an Internet meme involving an unexpected appearance of the music video for the 1987 Rick Astley song 
+             Never Gonna Give You Up. The meme is a type of bait and switch using a disguised hyperlink that leads to the music video. 
+             When victims click on a seemingly unrelated link, the site with the music video loads instead of what was expected, 
+             and in doing so they are said to have been rickrolled. 
+             The meme has also extended to using the song's lyrics in unexpected places.",
+            tags$a(href ="https://en.wikipedia.org/wiki/Rickrolling","Wikipedia")),
+             
+             br(),br(),
+        
+        tags$iframe(
+         seamless = "seamless",
+         src = "https://www.youtube.com/embed/dQw4w9WgXcQ",
+         height = 300,
+         width = 500), # end iframe
+        
+        br(),br(),br(),br(),br(),br(),
+        
+        "You can find all materials from this short course at our",
+        tags$a(href="https://github.com/RobertASmith/shiny_healthy_economics","Github repository")
+        
+        
+        
+        #HTML('<img src="Logo_Final.jpg",
+        #     height="300px"
+        #     style="float:center"/>')
+        
+    ) # end box, fluidrow and tab item
+    
+    ) # close tabItems
+     
+      
+    ), # close fluidRow
+    
+  
+  tags$footer(tags$img(src = "Logo_Final.jpg", width = "150px", height = "150px"),
+              tags$br(),
+              "This user-interface was created by Robert Smith & Paul Schneider of",
+              tags$a(href="https://www.darkpeakanalytics.com/", "Dark Peak Analytics."),
+              tags$br(),
+              "For more information contact",
+              tags$b("darkpeakanalytics@gmail.com"),
+              style = "position:absolute;
+                       bottom:50px;
+                       height:200px;
+                       padding: 0px;
+                       background-color: white;
+                       "
+              ) 
+
+  ) # close dashboardBody
+
+```
+
+## Formatting in Shiny
+
+We use twp types of formatting. HTML and CSS. In the first case we use *tags* for HTML functionality. However, when we need to use custom formatting we then tend to style these using CSS. The code below is an example of CSS code. Teaching CSS in detail is beyond the scope of this course, but more information can be found [here](https://shiny.rstudio.com/articles/css.html). In an ideal scenario the economist should build the basic app functionality and then get a web-designer (at hopefully a lower hourly rate) with experience of building sites to customize the aesthetics.
+
+```{r, eval = F}
+
+style = "position:absolute;
+         bottom:50px;
+         height:200px;
+         padding: 0px;
+         background-color: white;
+         "
+```
+
+### Server
+
+The server contains several different reactive functions. The most important one is the function beginning with *observeEvent(input$run_model*. The code contained in this function is run when the action button *run_model* is pressed. As before the wrapper function *f_wrapper* is run using shiny inputs, and tables and plots are created using custom functions (including ggplot).
+
+
+```{r, eval = F}
+
+#================================================================
+#                     Create Server Function
+#================================================================
+
+server <- function(input, output, session){   # server = function with two inputs
+  
+  # reactive function to get the csv file
+  getCSV_uTrt <- reactive({
+    
+    file <- input$file1
+    
+    ext <- tools::file_ext(file$datapath)
+    
+    req(file)
+    
+    validate(need(ext == "csv", "Please upload a csv file"))
+    
+    CSV_u_Trt <- read.csv(file$datapath, header = input$header,row.names = 1)
+    
+    CSV_u_Trt$u_Trt
+    
+  })
+  
+  # load the file and show it in the Contents tab
+  output$contents <- renderTable({
+    data = getCSV_uTrt()
+    data.frame(mean = mean(data),
+               sd = sd(data),
+               class = class(data),
+               min = min(data),
+               max = max(data),
+               N_obs = length(data),
+               NAs = sum(is.na(data)))
+    
+  })
+  
+  # update the run_model button to show number of PSAs
+  observeEvent(input$SI_n_sim, {
+    label <- paste0("Run ", input$SI_n_sim, " PSA runs")
+    updateActionButton(session, "run_model", label = label)
+  })
+  
+  
+  
+  observeEvent(input$run_model,       # when action button pressed ...
+               ignoreNULL = F, {
+                 
+                 
+                 if(input$use_CSV){
+                   print("using CSV")
+                   temp_U_Trt <- sample(getCSV_uTrt(),size = 1000,replace = T)
+                 } else {
+                   print("not using CSV")
+                   temp_U_Trt <- rtruncnorm(1000, mean = 0.95, sd = 0.02, b = 1)
+                 }
+                 
+                 # Run model wrapper function with the Shiny inputs and store as data-frame 
+                 df_model_res = f_wrapper(c_Trt = input$SI_c_Trt,
+                                          n_age_init = input$SI_n_age_init,
+                                          n_sim = input$SI_n_sim,
+                                          u_Trt = temp_U_Trt
+                 )
+                 
+                 
+                 #--- CREATE RESULTS TABLE ---#
+                 output$SO_icer_table <- renderTable({ # this continuously updates table
+                   
+                   df_res_table <- data.frame( # create data-frame
+                     
+                     Option =  c("Treatment","No Treatment"), 
+                     
+                     QALYs  =  c(mean(df_model_res$QALY_Trt),mean(df_model_res$QALY_NoTrt)),
+                     
+                     Costs  =  c(mean(df_model_res$Cost_Trt),mean(df_model_res$Cost_NoTrt)),
+                     
+                     Inc.QALYs = c(mean(df_model_res$QALY_Trt) - mean(df_model_res$QALY_NoTrt),NA),
+                     
+                     Inc.Costs = c(mean(df_model_res$Cost_Trt) - mean(df_model_res$Cost_NoTrt),NA),
+                     
+                     ICER = c(mean(df_model_res$ICER),NA)
+                     
+                   )
+                   
+                   # round the dataframe to two digits so looks tidier
+                   df_res_table[,2:6] <- round(df_res_table[,2:6],digits = 2) 
+                   
+                   #print the dataframe
+                   df_res_table
+                   
+                 }) # table plot end.
+                 
+                 
+                 #---  CREATE COST EFFECTIVENESS PLANE ---#
+                 output$SO_CE_plane <- renderPlot({ # render plot repeatedly updates.
+                   
+                   # use function ce_plot from above file to create plot.
+                   plot <- ce_plot(results = df_model_res,
+                                   wtp = input$lambda)
+                   
+                   # save cost-effectiveness plane for download
+                   ceP_download <<-  reactive({plot})
+                   
+                   # output plot from function.
+                   plot
+                   
+                 }) # render plot end
+                 
+                 #---  CREATE CEAC ---#
+                 output$SO_ceac <- renderPlot({ # render plot repeatedly updates.
+                   
+                   # use function ceac from above file to create plot.
+                   plot <- ceac_plot(results = df_model_res)
+                   
+                   # save ceac for download
+                   ceac_download <<-  reactive({plot})
+                   
+                   # output plot from function.
+                   plot
+                   
+                 }) # render plot end
+                 
+                 
+                 
+                 
+                 # cost effectiveness plane fig. download ----
+                 output$cep = downloadHandler(
+                   filename = 'ce_plane.png',    # select file name
+                   content = function(file) {
+                     device <- function(..., width, height) {
+                       grDevices::png(..., 
+                                      width = width, 
+                                      height = height,
+                                      res = 300, 
+                                      units = "in")
+                     }
+                     ggsave(file, 
+                            plot = ceP_download(), # need to remember to have "()" after the ceP_download we created above!
+                            device = device)
+                   })
+                 
+                 # CEAC fig. download ----
+                 output$ceac = downloadHandler(
+                   filename = 'ceac.png',    # select file name
+                   content = function(file) {
+                     device <- function(..., width, height) {
+                       grDevices::png(..., 
+                                      width = width, 
+                                      height = height,
+                                      res = 300, 
+                                      units = "in")
+                     }
+                     ggsave(file, 
+                            plot = ceac_download(), 
+                            device = device)
+                   })
+                 
+                 
+                 # data downloader
+                 output$downloadData <- downloadHandler(
+                   filename = function() {
+                     paste(input$dataset, ".csv", sep = "")
+                   },
+                   content = function(file) {
+                     write.csv(df_model_res, file, row.names = FALSE)
+                   }
+                 )
+                 
+                 
+               }) # Observe Event End
+  
+} # Server end
+
+```
+
+## Downloading Plots and Data
+
+The *downloadHandler* function below factilates the download of a plot. It links to *downloadButton()* in the user interface. There is a similar function to download data. A detailed guide to downloading data from shiny apps can be found here: [https://mastering-shiny.org/action-transfer.html#download](https://mastering-shiny.org/action-transfer.html#download).
+
+```{r, eval = F}
+
+# cost effectiveness plane fig. download ----
+  output$cep = downloadHandler(
+    filename = 'ce_plane.png',    # select file name
+    content = function(file) {
+      device <- function(..., width, height) {
+        grDevices::png(..., 
+                       width = width, 
+                       height = height,
+                       res = 300, 
+                       units = "in")
+      }
+      ggsave(file, 
+             plot = ceP_download(), # need to remember to have "()" after the ceP_download we created above!
+             device = device)
+             })
+```
+
+## Uploading data
+
+Uploading data can be useful where data is commercially sensitive, the user does not want to send it via email, or where data may change. A detailed tutorial on how to upload data in shiny can be found here: [https://mastering-shiny.org/action-transfer.html#upload](https://mastering-shiny.org/action-transfer.html#upload)].
+
+The user interface side of uploading data:
+
+```{r, eval = F}
+
+# Input CSV of Treat Utililities
+menuItem(text = "Upload data",
+         h4("Input CSV of Treatment Utilities"),
+         checkboxInput("use_CSV",
+              label = "Overwrite Treatment Utilities with CSV"),
+        fileInput("file1", 
+                  "Choose CSV File", 
+                  accept = ".csv"),
+                  checkboxInput("header", "Header", TRUE)
+                           )
+
+```
+
+Server side of uploading data:
+
+```{r, eval = F}
+# reactive function to get the csv file
+  getCSV_uTrt <- reactive({
+    
+    file <- input$file1
+    
+    ext <- tools::file_ext(file$datapath)
+    
+    req(file)
+    
+    validate(need(ext == "csv", "Please upload a csv file"))
+    
+    CSV_u_Trt <- read.csv(file$datapath, header = input$header,row.names = 1)
+    
+    CSV_u_Trt$u_Trt
+    
+  })
+
+```
+
+## Custom Plots using ggplot2
+
+ggplot2 is a very popular package used to create awesome plots & visualisations. There are a number of tutorials on its use, so we do not cover it in detail here except to provide the code for the cost-effectiveness plane plot and ceac plot.
+
+More information on ggplot2: [https://ggplot2.tidyverse.org/](https://ggplot2.tidyverse.org/).
+The section on plots in R for data-science is also very useful.
+[https://r4ds.had.co.nz/data-visualisation.html](https://r4ds.had.co.nz/data-visualisation.html).
+
+
+### Cost effectiveness plane plot
+
+A single function used in the server to create the reactive cost effectiveness plane plot.
+
+```{r,eval = F}
+
+ce_plot <- function(results = df_model_res,
+                    wtp = 20000){
+  
+  # calculate incremental costs and qalys from results data-frame in function input.
+  df_plot <- data.frame(inc_C = results$Cost_Trt - results$Cost_NoTrt,
+                        inc_Q = results$QALY_Trt - results$QALY_NoTrt)
+  
+  means <- data.frame(mean_inc_C = mean(df_plot$inc_C),
+                      mean_inc_Q = mean(df_plot$inc_Q))
+  
+  # now use this plotting data-frame to create a very simple ggplot.
+  plot <- ggplot(data = df_plot,
+                 aes(x = inc_Q,  # x axis incremental QALYS
+                     y = inc_C)  # y axis incremental Costs
+  ) +
+    theme_minimal()  +
+    
+    # titles
+    labs(title = "Cost-effectiveness Plane",
+         subtitle = paste0("Results of Probabilistic Sensitivity Analysis")) +
+    xlab("Incremental QALYs") +
+    ylab("Incremental Costs (GBP)") +
+    
+    
+    # add points and ellipse and horizontal and vertical lines
+    geom_point(alpha = 0.5,size = 0.7) +
+    stat_ellipse(type="norm", level=0.9,
+                 segments =50,col= "red") +
+    geom_vline(aes(xintercept = 0), colour = "grey",)+
+    geom_hline(aes(yintercept = 0),colour="grey") +
+    geom_point(data = means, 
+               aes(x=mean_inc_Q,
+                   y=mean_inc_C),
+               fill="red",size=5,pch=21) +
+    geom_abline(intercept = 0,linetype="dashed", slope = wtp)+ # add abline based on wtp
+    
+    
+    
+    # set x-limits and y-limits for plot.
+    xlim(c(
+      min(df_plot$inc_Q, df_plot$inc_Q * -1),
+      max(df_plot$inc_Q, df_plot$inc_Q * -1)
+    )) +
+    
+    ylim(c(
+      min(df_plot$inc_C, df_plot$inc_C * -1),
+      max(df_plot$inc_C, df_plot$inc_C * -1)
+    ))
+  
+  plot # output the plot from the function.
+  
+}
+
+
+```
+
+### CEAC plot
+
+A single function used in the server to create the reactive ceac plot.
+
+```{r, eval = F}
+
+# --------------------------------------------------------------- #
+#        COST EFFECTIVENESS ACCEPTABILITY CURVE PLOT              #
+# --------------------------------------------------------------- #
+
+ceac_plot <- function(results = df_model_res){
+  
+  # take what I need from the model output
+  TC = results[,c("Cost_NoTrt","Cost_Trt")]
+  TQ = results[,c("QALY_NoTrt","QALY_Trt")]
+  lambdas <- c(1:50) * 1000
+  
+  INB = c()
+  for(l in lambdas){
+    nb_temp = TQ * l - TC
+    inb_temp = apply(nb_temp,1,function(x) x == max(x))
+    inb_temp = apply(inb_temp,1,sum)
+    inb_df_temp = data.frame(Intervention = c("No Treatment","Treatment"),
+                             lambda = l,
+                             value = inb_temp/sum(inb_temp))
+    INB = rbind(INB,inb_df_temp)
+  }
+  
+  
+  # plot
+  ggplot(data = INB, aes(x = lambda,
+                         y= value,
+                         col = Intervention) )+
+    geom_line(size=1.5) + 
+    
+    scale_y_continuous(breaks=seq(0,1,0.25),
+                       limits = c(0,1),
+                       name = "Probability most cost-effective") +
+    xlab(label = "Willingness-to-pay (GBP)")+  
+    theme_minimal() +
+    theme(legend.position = "top") + 
+    labs(title = "Cost Effectiveness Acceptability Curve",
+         subtitle = "The probability each preferred intervention is most cost effective against willingness to pay for each QALY threshold.") +
+    NULL
+  
+}
+
+
+
+
+```
+
+## Dynamic User Interface
+
+There is one bit of dynamically changing user interface in the example. Within the user-interface there is an action button called *run_model*. All of the dynamic functionality is created in the server side with no additional input needed in the user-interface.
+
+The code from the example app is shown below. When the number of simulations *input$SI_n_sim* is changed a new label is created to reflect this. The label will be *Run* then the number of simulations *input$SI_n_sim* then *PSA runs*. The function *updateActionButton* uses this label to update the action button. More details can be found in the Mastering Shiny book:  [https://mastering-shiny.org/action-dynamic.html#simple-uses](https://mastering-shiny.org/action-dynamic.html#simple-uses).
+
+```{r, eval = F}
+
+observeEvent(input$SI_n_sim, {
+    label <- paste0("Run ", input$SI_n_sim, " PSA runs")
+    updateActionButton(session, "run_model", label = label)
+  })
+
+```
+
+
+
+
+## Downloading reports
+
+Once a user has undertaken some analysis using their assumptions, they may want to generate a static report (e.g. a PDF). There are two parts to creating a simple download-able report:
+
+* A download button in the user interface.
+* A download handler in the server.
+
+For a more generic description see [Winston Chang's Tutorial](https://shiny.rstudio.com/articles/generating-reports.html).
+
+### User interface side
+
+The *downloadButton* function must specify the name of the button and the markdown file that is to downloaded. In the example below we will download 'myreport.Rmd' by clicking the 'Create a Report' button in the user interface.
+
+```{r, eval=FALSE}
+#---  Download Markdown Report from app.R  ---#
+   downloadButton("myreport", "Create a Report")
+```
+
+### Server side
+
+The name of the output must match the id (the first parameter in the *downloadButton* function). We begin by specifying the file-name (simply the name assigned to the downloaded file). We then specify the content that is to be downloaded. This has several steps:
+1) create a temporary repository.
+2) Copy report.Rmd to that temporary repository.
+3) wrap up the parameters to be passed to the report into a list.
+4) render the report using rmarkdown.
+
+It is important to remember that the Rmarkdown code is independent of the app code. If the shiny-app code and Rmarkdown code differ then the output may also differ. For this reason we suggest that the Rmarkdown file should source the same functions as the app!  
+
+```{r, eval=FALSE}
+#---  TO INSERT BEFORE THE END OF THE SERVER in the app.R  ---#
+  output$myreport <- downloadHandler( 
+    # For a PDF output, modify the extension to ".pdf"
+    filename = "report.pdf",
+    content = function(file) {
+      # Create a function which will copy the report in a temporary directory before processing it.
+      tempReport <- file.path(tempdir(), "report.Rmd") # tempdir() function creates a temporary directory
+      file.copy("report.Rmd", tempReport, overwrite = TRUE) # Copies the report.Rmd to the temporary directory
+      
+      # Set up parameters to be written to the rmd document in a list
+      # Here the user modified parameters are Cost of Treatment, 
+      # number of simulations to run and the initial age 
+      params <- list(n = input$SI_c_Trt, m = input$SI_n_sim, x =input$SI_n_age_init)
+      
+      # To knit the report.Rmd with `params` list, and eval it in a
+      # child of the global environment (this isolates the code in the document
+      # from the code in this app).
+      # This provides better code isolation and makes things easier to debug.
+      rmarkdown::render(tempReport, output_file = file,
+                        params = params,
+                        envir = new.env(parent = globalenv())
+      )
+    }  
+)
+```
+
+### Simplest Reproducable Example
+
+The below example is of a markdown file that takes no inputs from the user interface. The files can be found in the *simplestReportApp* folder. The app.R file contains the following:
+
+USER INTERFACE
+
+The user interface contains only one thing, a button labeled "Create a Report". The ID for this button is "simplest_report".
+
+```{r, eval=FALSE}
+ui <- fluidPage(
+    
+    #---  Download Markdown Report from app.R  ---#
+    
+    downloadButton("simplest_report",  # id needs to link to server.
+                   "Create a Report")  # this appears on the button.
+)
+```
+
+SERVER
+
+The server includes only one thing. A output with the ID simplest_report (same as in the user interface) which downloads a html document called 'report'. The content of the report is created in the following steps:
+1) create a temporary path called rempReport.
+2) copy report.Rmd from the same path as the app in the path created in 1, overwrite any file that is already there.
+3) render the Rmarkdown document and output the file as a download from the application. 
+
+
+
+```{r, eval=FALSE}
+server <- function(input, output) {
+#---  TO INSERT BEFORE THE END OF THE SERVER in the app.R  ---#
+  output$simplest_report <- downloadHandler( 
+    # choose file name
+    filename = "report.html",    # the suffix must match the desired report type (e.g. pdf, html)
+    
+    # choose content
+    content = function(file) {
+      
+      # create a temporary directory
+      tempReport <- file.path(tempdir(), "report.Rmd") 
+      
+      # Copiy the report.Rmd to the temporary directory
+      file.copy("report.Rmd", tempReport, overwrite = TRUE) 
+      
+      # render the markdown file (no inputs).
+      rmarkdown::render(input = tempReport, 
+                        output_file = file,
+                        envir = new.env(parent = globalenv())
+      ) # end markdown render
+      
+    } # end content function
+    
+) # end download handler
+  
+} # end server function
+```
+
+RUN APPlICATION
+
+# Run the application 
+
+```{r, eval=FALSE}
+shinyApp(ui = ui, server = server)
+```
+
+### Medium Reproducable Example
+
+Passing information from the app to the markdown file.
+
+### Complex Reproducable Example
+
+We use the application described in the Wellcome Open Research paper and use it as our starting point.
+
+
+
+
+## Deploying app on shinyapps.io
+
+Guide here: [ShinyApps.io](https://docs.rstudio.com/shinyapps.io/)
+
+## Password Protection
+
+Different ways of doing this, from anon:
+
+```{r, eval=FALSE}
+library(shiny)
+library(ggplot2)
+u <- shinyUI(fluidPage(
+  titlePanel("Shiny Password"),
+  
+  sidebarLayout(position = "left",
+                sidebarPanel( h3("sidebar panel"),
+                              uiOutput("in.pss"),
+                              uiOutput("in.clr"),
+                              uiOutput("in.titl"),
+                              uiOutput("in.cnt"),
+                              uiOutput("in.seed")
+                              
+                ),
+                mainPanel(h3("main panel"),
+                          textOutput('echo'),
+                          plotOutput('stdplot')
+                )
+  )
+))
+pok <- F
+s <- shinyServer(function(input, output) 
+{
+  output$in.pss   <- renderUI({ input$pss; if (pok) return(NULL) else return(textInput("pss","Password:","")) })
+  output$in.clr   <- renderUI({ input$pss; if (pok) return(selectInput("clr","Color:",c("red","blue"))) else return(NULL) })
+  output$in.titl  <- renderUI({ input$pss; if (pok) return(textInput("titl","Title:","Data")) else return(NULL) })
+  output$in.cnt   <- renderUI({ input$pss; if (pok) return(sliderInput("cnt","Count:",100,1000,500,5)) else return(NULL) })
+  output$in.seed  <- renderUI({ input$pss; if (pok) return(numericInput("seed","Seed:",1234,1,10000,1)) else return(NULL) })
+  histdata <- reactive(
+    {
+      input$pss;
+      validate(need(input$cnt,"Need count"),need(input$seed,"Need seed"))
+      set.seed(input$seed)
+      df <- data.frame(x=rnorm(input$cnt))
+    }
+  )
+  observe({
+    if (!pok) {
+      password <- input$pss
+      if (!is.null(password) && password == "pass") {
+        pok <<- TRUE
+      }
+    }
+  }
+  )
+  output$echo = renderText(
+    {
+      if (pok) {
+        s <- sprintf("the %s is %s and has %d rows and uses the %d seed",
+                     input$ent,input$clr,nrow(histdata()),input$seed)
+      } else {
+        s <- ""
+      }
+      return(s)
+    }
+  )
+  output$stdplot = renderPlot(
+    {
+      input$pss
+      if (pok) {
+        return(qplot(data = histdata(),x,fill = I(input$clr),binwidth = 0.2,main=input$titl))
+      } else {
+        return(NULL)
+      }
+    }
+  )
+}
+)
+shinyApp(ui=u,server=s)
+```
+
+## Electron/Docker
+
+
