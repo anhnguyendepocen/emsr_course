@@ -3,7 +3,6 @@ title: "Session 1"
 author: "Robert Smith, Paul Schneider & Sarah Bates"
 date: "14/09/2020"
 output:
-  pdf_document: default
   html_document: default
 ---
 
