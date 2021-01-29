@@ -21,15 +21,26 @@ knit: (function(inputFile, encoding) {
 # Introduction
 
 
+# Partitioned Survival Models (PSM)
+
+```{r child = './PSM/psm.Rmd'}
+```
+
+
 # Markov Model
 
 ```{r child = './Markov Model/main_content_1.Rmd'}
 ```
 
 
+# Intro to R shiny
 
-# Partitioned Survival Models (PSM) R tutorial 
-
-```{r child = './PSM/psm.Rmd'}
+```{r child = './Intro to R Shiny/main_content.Rmd'}
 ```
 
+
+# R Shiny + Markov
+
+
+```{r child = './R Shiny Markov/main_content_4_adv.Rmd'}
+```

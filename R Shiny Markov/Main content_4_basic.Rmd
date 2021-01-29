@@ -1,0 +1,56 @@
+---
+title: "Session 4 - Basic Shiny"
+author: "Robert Smith, Paul Schneider & Sarah Bates"
+date: "14/09/2020"
+output: html_document
+---
+
+```{r include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Introduction
+
+In this session we will combinne the markov model developed in session two and the R shiny knowledge gained in session 3 to develop and R Shiny
+app for the markov model.
+
+### Objectives
+
+- Create an R shiny app for a markov model
+
+- Enable a user to enter treatment cost, number of PSA runs and initial age
+
+- Create outputs; a results table and cost-effectivness plane
+
+### Exercises
+
+### Exercise 1: Create a more complex model
+
+In this exercise you'll create a model with more inputs and integrate a function to generate the output: 
+
+a) Create a new Shiny app with the title "Sick Sicker Model in Shiny" and a sidebar Layout
+
+b) In the sidebar panel add four inputs:  
+
+    i) numeric input for treatment cost, with initial value of 200 and a range of 0 - 400
+    
+    ii) numeric input for number of PSA simulations, with initial value of 1000 and a range of 0 - 2000 
+    
+    iii) slider input, y, with a initial value of 25 and a range on 10 - 80 
+    
+    iv) run model action button
+    
+c) In the main panel, add
+
+    i) a results table, with title
+    
+    ii) a cost-effectiveness plane, with title
+    
+d) In the server function:
+
+    i) run the model with the user inputs for treatment cost and intial age and for the number of simulations specified by the user
+    
+    ii) Create a table with costs, QALYs, incremental costs and QALYs and ICER (output ci)
+    
+    iii) Create a cost-effectiveness plane (output cii)
+    
