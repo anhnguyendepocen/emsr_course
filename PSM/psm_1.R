@@ -1,6 +1,6 @@
 # PSM: partition survival modelling
   #
-  # New drug 'supimab' vs standard of care ('soc')
+  # New drug 'supimab' vs standard care ('soc')
   # A 3-state model (PFS, PPS, DEAD)
   # Curves based on parametric survival models and IPD
 
