@@ -1,6 +1,13 @@
+#==========================#
+# Making Health Economic Evaluation Shiny: A tutorial
+# Robert Smith, Paul Schneider & Sarah Bates
+# Dark Peak Analytics
+# Feb 2021
+#==========================#
+
 # PSM: partition survival modelling
   #
-  # New drug 'supimab' vs standard care ('soc')
+  # New drug 'supimab' vs standard of care ('soc')
   # A 3-state model (PFS, PPS, DEAD)
   # Curves based on parametric survival models and IPD
 
@@ -58,21 +65,21 @@
 # 4 retrieve parameters from models 
   os_shape <- os_reg$res[1,1]
   os_scale_soc <- os_reg$res[2,1]
-  os_scale_supi <- exp(os_reg$res.t[2,1] + os_reg$res.t[3,1])
+  os_scale_supi <- os_reg$res[2,1] * exp(os_reg$res[3,1])
   
   pfs_shape <- pfs_reg$res[1,1]
   pfs_scale_soc <- pfs_reg$res[2,1]
-  pfs_scale_supi <- exp(pfs_reg$res.t[2,1] + pfs_reg$res.t[3,1])
+  pfs_scale_supi <- pfs_reg$res[2,1] * exp(pfs_reg$res[3,1])
   
   
 # 5 Predict cumulative survival at given time points
   ## OS curves
   pred_os_soc <- 1 - os_reg$dfns$p(times,shape=os_shape,scale = os_scale_soc)
-  pred_os_supi <- (1 - os_reg$dfns$p(times,shape=os_shape, scale = os_scale_supi))
+  pred_os_supi <- 1 - os_reg$dfns$p(times,shape=os_shape, scale = os_scale_supi)
   
   ## PFS curves
   pred_pfs_soc <- 1 - pfs_reg$dfns$p(times,shape=pfs_shape,scale = pfs_scale_soc)
-  pred_pfs_supi <- (1 - pfs_reg$dfns$p(times,shape=pfs_shape, scale = pfs_scale_supi))
+  pred_pfs_supi <- 1 - pfs_reg$dfns$p(times,shape=pfs_shape, scale = pfs_scale_supi)
   
   ## PPS curves
   pred_pps_soc <- pred_os_soc - pred_pfs_soc
