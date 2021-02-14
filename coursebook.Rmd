@@ -5,8 +5,8 @@ author: Robert Smith, Paul Schneider & Sarah Bates (Dark Peak Analytics)
 date: "`r format(Sys.time(), '%d, %B, %Y')`"
 output:
   html_document:
-  toc: true
-  toc_float: true
+    toc: true
+    toc_float: true
 knit: (function(inputFile, encoding) { 
   rmarkdown::render(inputFile,
                     encoding=encoding, 
@@ -37,7 +37,7 @@ Rob, Paul & Sarah work at the intersection between public health, economics and 
 
 ## Course prerequisites
 
-We recommend that those attending the course have undertaken training in R and health economic evaluation (including state transition models) prior to the course. For an introduction to R see our previous course here [Intro2R](https://github.com/ScHARR-PHEDS/R4ScHARR). In particular those we assume prior knowledge of custom functions, lists, sourcing R files, loading packages, loops & matrix multiplication (%*%). 
+We recommend that those attending the course have undertaken training in R and health economic evaluation (including state transition models) prior to the course. For an introduction to R see our previous course here [Intro2R](https://github.com/ScHARR-PHEDS/R4ScHARR). In particular we assume prior knowledge of custom functions, lists, sourcing R files, loading packages, loops & matrix multiplication (%*%). 
 It would also be useful to play with some basic shiny applications prior to the course, a 20 minute tutorial can be found here: [https://shiny.rstudio.com/tutorial/](https://shiny.rstudio.com/tutorial/). It is essential that participants have installed R and RStudio and have installed the Shiny package prior to the course.  
 
 ## Installing R and R Studio.
@@ -71,3 +71,16 @@ Downloading R gives you the basic software environment, but an incredibly popula
 
 ```{r child = './R Shiny Markov/main_content_4_adv.Rmd'}
 ```
+
+
+
+# Contacts
+
+<br>
+This course was created for educational purposes. The content was created by [Robert Smith](https://www.linkedin.com/in/robert-smith-53b28438) <sup> 1,2 </sup>, [Paul Schneider](https://www.sheffield.ac.uk/scharr/staff-pgrs/studentprofiles/paulschneider) <sup> 1,2 </sup> & [Sarah Bates](https://www.linkedin.com/in/sarah-elizabeth-bates-647ab9145/) <sup> 1 </sup>. It is provided under an MIT licence. 
+
+Please send any feedback to [contact@darkpeakanalytics.com](mailto:contact@darkpeakanalytics.com?subject=[GitHub]%20EMSR%20Course).
+
+<sup> 1 </sup> *Public Health Economics and Decision Science, Wellcome Trust Doctoral Training Center, ScHARR, University of Sheffield, UK* <br>
+<sup> 2 </sup> *[Dark Peak Analytics](https://www.darkpeakanalytics.com), Sheffield, UK*
+:::

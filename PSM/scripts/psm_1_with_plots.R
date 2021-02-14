@@ -25,15 +25,15 @@ times <- seq(from = 0, to = 10, by = 1/52) # NOTE: 1 interval = 1 week
 
 # utilities
 u_pfs <- 0.90
-u_pps <-  0.50
+u_pps <-  0.65
 
 # costs soc
-c_pfs_soc <- 22000
+c_soc <- 22000
 
 # costs supimab
-c_drug_supi <- 45000
+c_drug_supi <- 30000
 c_admin_supi <- 2000
-c_pfs_supi <- c_drug_supi + c_admin_supi
+c_supi <- c_drug_supi + c_admin_supi
 
 # costs supportive care for post-progression
 c_support <- 5000
@@ -207,16 +207,16 @@ ggplot() +
 
 
 # 6 Define and apply AUC function
-myAUC <- function(y,time){
+myAUC <- function(x, y){
   auc <- rep(NA, times = length(y)-1)
-  for (i in 2:(length(time))) {
-    auc_i <- ( (y[i] + y[i - 1])/2 ) * (time[i] - time[i - 1])
+  for (i in 2:(length(x))) {
+    auc_i <- ( (y[i] + y[i - 1])/2 ) * (x[i] - x[i - 1])
     auc[i-1] <- auc_i
   }
   return(auc)
 }
 
-mat_auc <- apply(mat_surv,2,myAUC,time = times)
+mat_auc <- apply(mat_surv,2,myAUC,x = times)
 # mat_auc
 
 ## Run some basic checks  
@@ -242,13 +242,13 @@ ggplot(auc_df, aes(fill=state, y=auc, x=time)) +
 
 
 # 7 multiply costs and utilities with computed AUCs
-c_pfs_supi <- mat_auc[,"pred_pfs_supi"] * (c_pfs_supi)
+c_pfs_supi <- mat_auc[,"pred_pfs_supi"] * c_supi
 c_pps_supi <- mat_auc[,"pred_pps_supi"] * c_support
-c_pfs_soc <- mat_auc[,"pred_pfs_soc"] * (c_pfs_soc)
+c_pfs_soc <- mat_auc[,"pred_pfs_soc"] * c_soc
 c_pps_soc <- mat_auc[,"pred_pps_soc"] * c_support
 
 q_pfs_supi <- mat_auc[,"pred_pfs_supi"] * u_pfs
-q_pps_supi <- mat_auc[,"pred_pps_supi"] * u_pfs
+q_pps_supi <- mat_auc[,"pred_pps_supi"] * u_pps
 q_pfs_soc <- mat_auc[,"pred_pfs_soc"] * u_pfs
 q_pps_soc <- mat_auc[,"pred_pps_soc"] * u_pps
 
@@ -313,3 +313,4 @@ inb_20
 wtp_steps <- seq(0,50000,1000)
 inb_x <- (total_qalys_supi - total_qalys_soc) * wtp_steps - (total_costs_supi - total_costs_soc)
 cbind(wtp_steps,inb_x)
+
