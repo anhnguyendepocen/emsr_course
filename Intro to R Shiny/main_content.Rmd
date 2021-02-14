@@ -3,11 +3,10 @@ title: 'Session 2: Basics of Shiny'
 author: "Robert Smith, Paul Schneider & Sarah Bates"
 date: "10/09/2020"
 output:
-  pdf_document: default
   html_document: default
 ---
 
-```{r setup, include=FALSE}
+```{r include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
@@ -56,7 +55,7 @@ library(shiny)
 
 You can start a new shiny web app through the file --> New file --> Shiny web app menu options. This will open up a window in which you'll create a directory for your app, the script for the app will be saved inside that directory and the script for Shiny will be automatically saved as "app.R". This will be populated with a template for the Shiny app with example code 
 
-![New Shiny Web App Dialog box](Images/Screenshots/New R shiny dialog box){width=300 height=200px}
+![New Shiny Web App Dialog box](images/Screenshots/New R shiny dialog box.png){width=300 height=200px}
 
 Alternatively you can open a new R script file and manually add the necessary functions which we'll describe in the next session.
 
@@ -97,7 +96,7 @@ server <- function(input, output){
 
 To run the app either:
 
-1. Select the Run App button ![run app button](Images/Screenshots/run app button.png){width=45 height=30px}. 
+1. Select the Run App button ![run app button](images/Screenshots/run app button.png){width=45 height=30px}. 
 
 2. Use the shinyApp function that creates the shiny app from the ui and server. 
 
@@ -114,7 +113,7 @@ To run the app either:
 
 These should all show your Shiny app 
 
-![Simple R shiny app](Images/Screenshots/Simple hello app.png){#id .class width=300 height=300px}
+![Simple R shiny app](images/Screenshots/Simple hello app.png){#id .class width=300 height=300px}
 
 While the Shiny app is running, you will not be able to run any other R commands. To exit the app and return to the R session, hit the  key, close the app window or use the stop button in the console.
 
@@ -151,7 +150,7 @@ server <- function(input, output){   # server = function with two inputs
 
 ```
 
-![Simple R shiny app with title](Images/Screenshots/x by 10.png){#id .class width=300 height=300px}
+![Simple R shiny app with title](images/Screenshots/x by 10.png){#id .class width=300 height=300px}
 
 SidebarLayout() can be used to create an app that comprises a sidebar panel and main panel. The default position of the sidebar panel is on the left but can be moved to the right hand side of the display using: position = "right" within the sidebar function.  Content can be added into either the sidebarPanel or mainPanel. There are many other layouts that can be used - more can be found here: [https://shiny.rstudio.com/articles/layout-guide.html](https://shiny.rstudio.com/articles/layout-guide.html)
 
@@ -242,7 +241,7 @@ ui <- fluidPage(    # create user interface using fluidpage function
 
 This should create a box where the user is able to input a model
 
-![R shiny app with input option](Images/Screenshots/x by 10 with input.png){#id .class width=300 height=300px}
+![R shiny app with input option](images/Screenshots/x by 10 with input.png){#id .class width=300 height=300px}
 
 There are many other input options that can be used. These provide various different options for a user to enter a value. The commonly used options are below
 
@@ -339,7 +338,7 @@ server <- function(input, output){   # server = function with two inputs
 
 When you run this code (user interface and server) together (you can find this in script 2), you should see an app in which you can enter a value which is then multiplied by 10. When you change this value, shiny will re-create the output accordingly. 
 
-![Interactive R Shiny app](Images/Screenshots/x by 10 with output.png){#id .class width=300 height=300px}
+![Interactive R Shiny app](images/Screenshots/x by 10 with output.png){#id .class width=300 height=300px}
 
 Shiny stores which outputs are dependent on each input and so when a user changes an input, all the outputs dependent on that input will update to reflect the new values. 
 
@@ -402,7 +401,7 @@ ui <- fluidPage(    # create user interface using fluidpage function
 
 If you run the app, you should now see an "Run model" button.
 
-![R Shiny app with action button](Images/Screenshots/x by 10 with action button.png){#id .class width=300 height=300px}
+![R Shiny app with action button](images/Screenshots/x by 10 with action button.png){#id .class width=300 height=300px}
 
 Within the server function, we've added the function observeEvent which means that when the action button is clicked (input$run_model), the number_time_10 is generated and printed with the text using the code that we added previously. 
 

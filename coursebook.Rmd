@@ -1,0 +1,46 @@
+---  
+title: "Coursebook"
+subtitle: 'Economic Modeling and Shiny in R Course'
+author:
+  - Robert Smith
+  - Paul Schneider
+  - Sarah Bates
+  - "<i>Dark Peak Analytics</i>"
+date: "`r format(Sys.time(), '%B, %Y')`"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+knit: (function(inputFile, encoding) { 
+      rmarkdown::render(inputFile,
+                    encoding=encoding, 
+                    output_file='index.html') })
+    
+---
+
+# Introduction
+
+
+# Partitioned Survival Models (PSM)
+
+```{r child = './PSM/psm.Rmd'}
+```
+
+
+# Markov Model
+
+```{r child = './Markov Model/main_content_1.Rmd'}
+```
+
+
+# Intro to R shiny
+
+```{r child = './Intro to R Shiny/main_content.Rmd'}
+```
+
+
+# R Shiny + Markov
+
+
+```{r child = './R Shiny Markov/main_content_4_adv.Rmd'}
+```

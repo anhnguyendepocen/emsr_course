@@ -5,7 +5,7 @@ date: "14/09/2020"
 output: html_document
 ---
 
-```{r setup, include=FALSE}
+```{r, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
@@ -752,7 +752,7 @@ server <- function(input, output) {
 
 RUN APPlICATION
 
-# Run the application 
+## Run the application 
 
 ```{r, eval=FALSE}
 shinyApp(ui = ui, server = server)
