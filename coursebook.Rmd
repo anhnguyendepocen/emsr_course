@@ -15,7 +15,7 @@ knit: (function(inputFile, encoding) {
  
 # Introduction
   
-You can find all materials from this short course on our [Github Repository](https://github.com/RobertASmith/shiny_healthy_economics). Feel free to use any code from this repository, but make sure you cite the following peer reviewed article: 
+You can find all materials from this short course on our [Github Repository](https://github.com/bitowaqr/emsr_course). Feel free to use any code from this repository, but make sure you cite the following peer reviewed article: 
   
 Smith R and Schneider P. Making health economic models Shiny: A tutorial. Wellcome Open Res 2020, 5:69 [https://doi.org/10.12688/wellcomeopenres.15807.2](https://doi.org/10.12688/wellcomeopenres.15807.2)
 
