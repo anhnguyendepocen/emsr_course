@@ -43,9 +43,9 @@ rm(list = ls())  # delete everything that is in R's memory
 
 
 Strategies <- c("No Treatment", "Treatment")  # strategy names 
-age     <- 25                                 # age at baseline
-max_age <- 55                                 # maximum age of follow up
-n_t  <- max_age - age                         # time horizon, number of cycles
+n_age_init     <- 25                                 # age at baseline
+n_age_max <- 55                                 # maximum age of follow up
+n_t  <- n_age_max - n_age_init                         # time horizon, number of cycles
 d_r <- 0.03                                   # equal discount of costs and QALYs by 3%
 
 # Transition probabilities (per cycle)

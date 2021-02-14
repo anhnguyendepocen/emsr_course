@@ -57,6 +57,9 @@ ui <- fluidPage(    # create user interface using fluidpage function
                   min = 10,                   # minimum value allowed
                   max = 80),                  # maximum value allowed
       
+      selectInput(inputId = "treatment",  # id of input, used in server
+                  label = "Treatment",      # label next to input
+                  list("A", "B", "C")),     # list of options
       
       actionButton(inputId = "run_model",     # id of action button, used in server
                    label   = "Run model")     # action button label (on button)

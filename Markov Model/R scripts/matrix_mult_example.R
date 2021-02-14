@@ -49,5 +49,5 @@ tm <- microbenchmark::microbenchmark(
 
 autoplot(tm,log = T)
 
-ggsave(autoplot(tm,log = T),filename = "Course content/Session 1/Image/matrix_mult_plot.png")
+#ggsave(autoplot(tm,log = T),filename = "Course content/Session 1/Image/matrix_mult_plot.png")
 

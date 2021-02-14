@@ -43,10 +43,10 @@ rm(list = ls())  # delete everything that is in R's memory
 
 
 Strategies <- c("No Treatment", "Treatment")  # strategy names 
-age     <- 25                                 # age at baseline
-max_age <- 55                                 # maximum age of follow up
-n_t  <- max_age - age                         # time horizon, number of cycles
-d_r <- 0.03                                   # equal discount of costs and QALYs by 3%
+n_age_init     <- 25                                 # age at baseline
+n_age_max <- 55                                 # maximum age of follow up
+n_t  <- n_age_max - n_age_init                         # time horizon, number of cycles
+d_r <- 0.035                                   # equal discount of costs and QALYs by 3%
 
 # Transition probabilities (per cycle)
 p_HD    <- 0.005           # probability to die when healthy
@@ -136,3 +136,13 @@ for (t in 1:n_t){ # throughout the number of cycles
 }
 
 head(m_TR)  # head shows us the first six rows by default. 
+
+
+############################  Outputs  ############################################
+
+## Use the model to estimate cost-effectiveness of the treatment: 
+#  1. Create vectors for the costs and utility of each treatment group 
+#  2. Estimate mean costs and QALYs for each year (hint: need to use matrix multiplication)
+#  3. If you didn't in the part B, apply discount weights (hint: need to use transpose function t() and matrix multiplication)
+#  4. Create results table 
+

@@ -1,11 +1,11 @@
 ############### markov modelling with PSA ###########################
-
+ 
 ### markov modelling as function
 
 f_MM_sicksicker <- function(params) {
   # run following code with a set of data 
   with(as.list(params), {
-    
+
     # rate of death in healthy
     r_HD    = - log(1 - p_HD) 
     # rate of death in sick
@@ -18,6 +18,7 @@ f_MM_sicksicker <- function(params) {
     p_S2D   = 1 - exp(-r_S2D) 
     # calculate discount weight for each cycle
     v_dwe <- v_dwc <- 1 / (1 + d_r) ^ (0:n_t) 
+    
     #transition probability matrix for NO treatment
     m_P <- matrix(0,
                   nrow = n_states, 
@@ -122,6 +123,25 @@ input <- data.frame(
   u_Trt   <- 0.95             # utility when being treated
   
 )
+
+### Run model using function
+
+
+#-- Inputs --#
+
+# age at baseline
+n_age_init = 25
+# maximum age of follow up
+n_age_max  = 110
+# discount rate for costs and QALYS 
+d_r = 0.035
+#  number of cycles
+n_t <- n_age_max - n_age_init
+# the 4 health states of the model:
+v_n <- c("H", "S1", "S2", "D") 
+# number of health states 
+n_states <- length(v_n) 
+
 
 f_MM_sicksicker(params = input)  # Run model function with input data frame as input paramters
 
@@ -230,6 +250,7 @@ f_gen_psa(n_sim = 5,c_Trt = 50)
 # the names of the states as before, but this time we also define the n_sim which is the number
 # of simulations for the PSA and the cost of treatment as these are now needed to generate the values 
 # for the PSA input.
+
 
 # age at baseline
 n_age_init = 25

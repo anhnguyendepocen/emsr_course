@@ -51,7 +51,7 @@ ui <- fluidPage(    # create user interface using fluidpage function
                    label = "Number Y",        # label next to numeric input
                    value = 1000,              # initial value
                    min = 0,                   # minimum value allowed
-                   max = 400),                # maximum value allowed
+                   max = 2000),                # maximum value allowed
       
       sliderInput(inputId = "SI_Z",  # id of input, used in server
                   label = "Number Z",      # label next to numeric input
@@ -67,10 +67,9 @@ ui <- fluidPage(    # create user interface using fluidpage function
     
     mainPanel(                                # open main panel
       
-      h3("Basic Plot"),                           # heading (Cost effectiveness plane)
+      h3("Results"),                    # heading (results)                
       
-      plotOutput(outputId = "SO_plot")       # plot Output id = CE_plane, from server
-      
+      textOutput(outputId = "printvalue")                    # heading (results table)                
       
       
     ) # close main panel    
@@ -91,17 +90,18 @@ server <- function(input, output){   # server = function with two inputs
   observeEvent(input$run_model,       # when action button pressed ...
                ignoreNULL = F, {
                  
-                df = fun_shiny(x = input$SI_X,
-                               y = input$SI_Y,
-                               z = input$SI_Z)
-
-                 output$SO_plot <- renderPlot({ # render plot repeatedly updates.
+                 num = fun_shiny(x = input$SI_X,
+                                 y = input$SI_Y,
+                                 z = input$SI_Z)
                  
-                   plot(x = df$x,
-                        y = df$y) # plot end
-                   
-                 }) # renderplot end  
-                 
+                #--- CREATE NUMBER IN SERVER ---#
+               
+                 output$printvalue <- renderText({
+                  
+                  paste("The difference between the maximum and the mean of x, y, and z is:", round(num,1))
+                  
+                }) # render Text end.
+                
                  
                }) # Observe Event End  
   

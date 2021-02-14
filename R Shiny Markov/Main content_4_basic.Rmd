@@ -28,29 +28,29 @@ app for the markov model.
 
 In this exercise you'll create a model with more inputs and integrate a function to generate the output: 
 
-a) Create a new Shiny app with the title "Sick Sicker Model in Shiny" and a sidebar Layout
+1) Create a new Shiny app with the title "Sick Sicker Model in Shiny" and a sidebar Layout
 
-b) In the sidebar panel add four inputs:  
+2) In the sidebar panel add four inputs:  
 
-    i) numeric input for treatment cost, with initial value of 200 and a range of 0 - 400
+    a) numeric input for treatment cost, with initial value of 200 and a range of 0 - 400
     
-    ii) numeric input for number of PSA simulations, with initial value of 1000 and a range of 0 - 2000 
+    b) numeric input for number of PSA simulations, with initial value of 1000 and a range of 0 - 2000 
     
-    iii) slider input, y, with a initial value of 25 and a range on 10 - 80 
+    c) slider input, y, with a initial value of 25 and a range on 10 - 80 
     
-    iv) run model action button
+    d) run model action button
     
-c) In the main panel, add
+3) In the main panel, add
 
-    i) a results table, with title
+    a) a results table, with title
     
-    ii) a cost-effectiveness plane, with title
+    b) a cost-effectiveness plane, with title
     
-d) In the server function:
+4) In the server function:
 
-    i) run the model with the user inputs for treatment cost and intial age and for the number of simulations specified by the user
+    a) run the model with the user inputs for treatment cost and initial age and for the number of simulations specified by the user
     
-    ii) Create a table with costs, QALYs, incremental costs and QALYs and ICER (output ci)
+    b) Create a table with costs, QALYs, incremental costs and QALYs and ICER (output 3a)
     
-    iii) Create a cost-effectiveness plane (output cii)
+    c) Create a cost-effectiveness plane (output 3b)
     

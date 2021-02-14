@@ -8,6 +8,8 @@
 # contact: rasmith3@sheffield.ac.uk
 # ==============
 
+rm(list = ls())
+
 # install.packages("shiny") # necessary if you don't already have the function 'shiny' installed.
 
 # we need the function shiny installed, this loads it from the library.
