@@ -1,24 +1,52 @@
 ---  
-title: "Coursebook"
-subtitle: 'Economic Modeling and Shiny in R Course'
-author:
-  - Robert Smith
-  - Paul Schneider
-  - Sarah Bates
-  - "<i>Dark Peak Analytics</i>"
-date: "`r format(Sys.time(), '%B, %Y')`"
+title: "Course-Book, Costello Medical"
+subtitle: 'Making Health Economic Evaluation Shiny: A tutorial'
+author: Robert Smith, Paul Schneider & Sarah Bates (Dark Peak Analytics)
+date: "`r format(Sys.time(), '%d, %B, %Y')`"
 output:
   html_document:
-    toc: true
-    toc_float: true
+  toc: true
+  toc_float: true
 knit: (function(inputFile, encoding) { 
-      rmarkdown::render(inputFile,
+  rmarkdown::render(inputFile,
                     encoding=encoding, 
                     output_file='index.html') })
-    
 ---
-
+ 
 # Introduction
+  
+You can find all materials from this short course on our [Github Repository](https://github.com/RobertASmith/shiny_healthy_economics). Feel free to use any code from this repository, but make sure you cite the following peer reviewed article: 
+  
+Smith R and Schneider P. Making health economic models Shiny: A tutorial. Wellcome Open Res 2020, 5:69 [https://doi.org/10.12688/wellcomeopenres.15807.2](https://doi.org/10.12688/wellcomeopenres.15807.2)
+
+This short course is designed to provide the participant with a basic set of tools to make user-interfaces for health economic models constructed in R. The aim is to ensure delegates understand the basic functionality of a Health Economic Evaluation Model constructed in R and displayed in a user-interface created in R-Shiny. 
+
+The course makes use of the authors experiences of working with R for data-science and statistical analysis. However there are many other resources available, and we would particularly recommend the freely available content at *[R for Data Science](https://r4ds.had.co.nz/)* as a good place to recap the materials taught in this course. The hard copy of Hadley Wickham and Garrett Grolemund's book of the same name (and content) is available at *[Amazon.com](https://r4ds.had.co.nz/)*. Alternatively, a user guide is available on the CRAN R-Project website [here](https://cran.r-project.org/doc/manuals/r-release/R-intro.html), although the authors find this less easy to follow than Hadley Wickham's book described above. Further details of where to go to answer more specific questions are provided throughout the course.
+
+## Who are we
+
+Rob, Paul & Sarah work at the intersection between public health, economics and data-science. They are based at the School of Health and Related Research at the University of Sheffield.
+
+*[Robert Smith](https://www.linkedin.com/in/robert-smith-53b28438/)* is affiliated with ScHARR, University of Sheffield, the Joint Biosecurity Centre, Department of Health and Social Care, and Dark Peak Analytics, a company he founded in 2020 with Paul Schneider. His research focuses on the methods used to estimate the costs and benefits of public health interventions, with a specific interest in microsimulation modelling in R. He has become increasingly interested in the use of web based user interfaces (in R-Shiny) to make research more transparent and to aid decision makers. Robert has been involved in multiple projects with the World Health Organization, and is currently working in Advanced Analytics at the Joint Biosecurity Centre.
+
+*[Paul Schneider](https://bitowaqr.github.io/)* is based at ScHARR, University of Sheffield and a co-founder of Dark Peak Analytics. His research is focused on conceptual and methodological problems in valuing health outcomes in economic evaluations. A medical doctor and epidemiologist by training, he has used R in various research projects, ranging from the modeling costs of breast cancer, and value of information analyses, to the monitoring of influenza in real-time using online data. He is a keen advocate of open science practices.
+
+*[Sarah Bates](https://www.linkedin.com/in/sarah-elizabeth-bates-647ab9145/)* joined Dark Peak Analytics in 2020. She has previously taught a number of postgraduate courses in Health Economics & Decision Science at ScHARR (University of Sheffield), where her PhD was focused on the feasibility of including psychological factors in health economic models of behavioural weight management interventions.
+
+\newpage
+
+## Course prerequisites
+
+We recommend that those attending the course have undertaken training in R and health economic evaluation (including state transition models) prior to the course. For an introduction to R see our previous course here [Intro2R](https://github.com/ScHARR-PHEDS/R4ScHARR). In particular those we assume prior knowledge of custom functions, lists, sourcing R files, loading packages, loops & matrix multiplication (%*%). 
+It would also be useful to play with some basic shiny applications prior to the course, a 20 minute tutorial can be found here: [https://shiny.rstudio.com/tutorial/](https://shiny.rstudio.com/tutorial/). It is essential that participants have installed R and RStudio and have installed the Shiny package prior to the course.  
+
+## Installing R and R Studio.
+
+R is a free software environment for statistical analysis and data science. It is a collaborative effort started by Robert Gentleman and Ross Ihaka in New Zealand, but now made up of hundreds of people. R is made freely available by the Comprehensive R archive Network (CRAN), in the UK it can be downloaded through the University of Bristol *[here](https://www.stats.bris.ac.uk/R/)*.There are options of downloading R for Linux, Mac and Windows. 
+
+Downloading R gives you the basic software environment, but an incredibly popular add-on called 'RStudio' is required to follow this course. You should download the free 'RStudio Desktop Open Source Licence' version for the laptop you will be attending the course with from *[RStudio.com](https://www.rstudio.com/products/rstudio/#Desktop)*. If you have time before the course, it would be hugely beneficial to get familiar with RStudio. 
+
+\newpage
 
 
 # Partitioned Survival Models (PSM)
@@ -40,7 +68,6 @@ knit: (function(inputFile, encoding) {
 
 
 # R Shiny + Markov
-
 
 ```{r child = './R Shiny Markov/main_content_4_adv.Rmd'}
 ```
