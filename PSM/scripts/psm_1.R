@@ -164,7 +164,7 @@
   # total_qalys_soc
   
   ## ICER
-  mean( (total_costs_supi - total_costs_soc) / (total_qalys_supi - total_qalys_soc) )
+  (total_costs_supi - total_costs_soc) / (total_qalys_supi - total_qalys_soc) 
   
   ## INB at 20k
   inb_20 <-  (total_qalys_supi - total_qalys_soc) * 20000 - (total_costs_supi - total_costs_soc)

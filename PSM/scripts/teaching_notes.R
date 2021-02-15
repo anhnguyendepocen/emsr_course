@@ -1,55 +1,68 @@
+# -----------------------------------------------#
+##### DISCLAIMER:
+#####   DO NOT RUN
+#####   THESE ARE JUST TEACHING NOTES
+#####   CODE MAY BREAK
+# -----------------------------------------------#
+
 # psm
 # author: paul schneider
-# date/version: 14 feb 2021
+# date/version: 15 feb 2021
 # ---------------------------------
 
 
-# coding conventions ---------
+# Coding conventions --------
 
-## 1. commenting
+# 1 commenting
 
-# heading 1 --------------
+# Header 1 --------------------
 
-### heading 2 --------------
+# Header 2 ---------------
 
-### subheading 
+##### subheading
 
-# comment above
-runif(1) # side comment
-
-# 2. spacing
-# bad
-plot(x=xCoord,y=ataMat[,makeColName(metric,ptiles[1],"roiOpt")],ylim=ylim,xlab="dates",ylab=metric,main=(paste(metric,"sample",sep="")))
-
-plot(x    = xCoord,
-     y    = dataMat[, makeColName(metric, ptiles[1], "roiOpt")],
-     ylim = ylim,
-     xlab = "dates",
-     ylab = metric,
-     main = (paste(metric, " for 3 samples ", sep=""))
-     )
+# comments above
+1+1 # side comment
 
 
-# 3. naming 
+# 2 spacing
+  # bad
+  plot(x=xCoord,y=ataMat[,makeColName(metric,ptiles[1],"roiOpt")],ylim=ylim,xlab="dates",ylab=metric,main=(paste(metric,"sample",sep="")))
+  # good
+  plot(x    = xCoord,
+       y    = dataMat[, makeColName(metric, ptiles[1], "roiOpt")],
+       ylim = ylim,
+       xlab = "dates",
+       ylab = metric,
+       main = (paste(metric, " for 3 samples ", sep=""))
+  )
 
-snake_case <- c(1,2,3,4)
-c_drugA <- 12031
-u_pfs <- 0.9
-q_pfs <- 12
-df_os <- data.frame()
-mat_os <- matrix(data = c(1,2,3,4), ncol = 2)
-# bad
-yhat <- 1
-theta <- 2
-mx <- 3
-gr.x <- 4
+
+
+# 3 naming conventions
+  myFunction <- function(){}
+  snake_case <- c(12,3,4,5)
+  c_drugA <- 123123
+  u_pfs <- 0.9
+  q_pfs <- 12
+  df_os <- data.frame()
+  mat_os <- matrix()
   
-DISC_RATE <- 0.035
-myFunction <- function(x){
-  x + 1
-}
+  # bad
+  yhat <- 1
+  theta <- 2
+  mx <- 3
+  gr.x <- 4
 
-#########
+
+  
+# 4. build your own code! 
+
+
+
+
+# start PSM
+##------------------------------------
 # PSM
 
 # load pkgs
@@ -112,6 +125,99 @@ mat_surv <- cbind(
 
 
 ##########
+#----------------------------------------------------#
+# VISUALISE SURVIVAL CURVES
+    kmPlotter <- function(event_times, group){
+      # simplified KM plot df function
+      # can only be used when there is NO CENSORING!
+      uniq_g <- unique(group)
+      res<- c()
+      for(g in uniq_g){
+        times <- event_times[group ==g]
+        min_t <- min(times)
+        max_t <- max(times)
+        uniq_t <- unique(times)
+        uniq_t <- uniq_t[order(uniq_t)]
+        n <- length(times)
+        S <- c(1)
+        for(t in 2:length(uniq_t)){
+          post_n <- sum(times > uniq_t[t])
+          S <- c(S,post_n/ n  )
+        }
+        df <- data.frame(times = uniq_t, S, trt = g) 
+        res <- rbind(res,df)
+      }
+      
+      return(res)
+    }
+    
+    km_plot_os <- kmPlotter(df_os$eventtime,df_os$trt)
+    km_plot_pfs <- kmPlotter(df_pfs$eventtime,df_pfs$trt)
+    
+    # TOGETHER
+    ggplot() +
+      # OS KM observed
+      geom_step(data = km_plot_os,aes(x=times, y= S, col = trt, linetype="OS"), alpha = 0.5) +
+      # PFS KM observed
+      geom_step(data = km_plot_pfs,aes(x=times, y= S, col = trt, linetype="PFS"), alpha = 0.5) +
+      
+      # Weibull est OS
+      geom_line(aes(x=times,y=pred_os_soc,col = "SOC", linetype="OS" )) +
+      geom_point(aes(x=times,y=pred_os_soc,col = "SOC" )) +
+      
+      geom_line(aes(x=times,y=pred_os_supi, col="Supimab",linetype="OS" )) +
+      geom_point(aes(x=times,y=pred_os_supi, col="Supimab", )) +
+      # Weibull est PFS
+      geom_line(aes(x=times,y=pred_pfs_soc,col = "SOC", linetype="PFS" )) +
+      geom_point(aes(x=times,y=pred_pfs_soc,col = "SOC")) +
+      geom_line(aes(x=times,y=pred_pfs_supi, col="Supimab",linetype="PFS" )) +
+      geom_point(aes(x=times,y=pred_pfs_supi, col="Supimab", )) +
+      
+      coord_cartesian(xlim=c(0,7)) +
+      theme_minimal()
+    
+    # -------------       
+        
+        
+      # AUC
+      ## visualise AUC PPS + PFS SOC
+      ggplot() +
+        geom_ribbon(aes(x = times, ymin = 0,ymax = pred_pfs_soc, fill = "PFS")) +
+        geom_ribbon(aes(x = times, ymin = pred_pfs_soc,ymax = pred_os_soc, fill = "PPS"), alpha = 0.7) +
+        geom_line(aes(x = times, y = pred_pfs_soc)) +
+        geom_line(aes(x = times, y = pred_os_soc)) +
+        ## labels, axes, and legend
+        ggtitle("PFS+PPS AUC - SOC ") +
+        ylab("Cumulative survival") +
+        scale_x_continuous(name = "Years", breaks = seq(0,10,2)) +
+        scale_fill_manual(name = "State", 
+                          labels = c("PFS AUC","PPS AUC"),
+                          values = c("#00BFC4","cadetblue")) +
+        theme_minimal() +
+        theme(legend.position = "bottom")
+      
+      # AUC
+        ## visualise AUC PPS + PFS Supimab
+        ggplot() +
+          geom_ribbon(aes(x = times, ymin = 0,ymax = pred_pfs_supi, fill = "PFS")) +
+          geom_ribbon(aes(x = times, ymin = pred_pfs_supi,ymax = pred_os_supi, fill = "PPS"), alpha = 0.7) +
+          geom_line(aes(x = times, y = pred_pfs_supi)) +
+          geom_line(aes(x = times, y = pred_os_supi)) +
+          ## labels, axes, and legend
+          ggtitle("PFS+PPS AUC - Supimab ") +
+          ylab("Cumulative survival") +
+          scale_x_continuous(name = "Years", breaks = seq(0,10,2)) +
+          scale_fill_manual(name = "State", 
+                            labels = c("PFS AUC","PPS AUC"),
+                            values = c("#00BFC4","cadetblue")) +
+          theme_minimal() +
+          theme(legend.position = "bottom")
+        
+###------------
+# TRAPEZOID METHOD
+#### -----------        
+
+
       vline_df <- data.frame(cbind(
         x = rep(times,2),
         y = c(cbind(0,pred_pfs_supi)),
@@ -156,6 +262,12 @@ myAUC <- function(x, y){
 
 }
 
+
+#######################
+# BREAK -------------------
+########################
+
+
 ############################
 # ------ SOLUTION ----------
 
@@ -174,6 +286,11 @@ myAUC(x = times, y = pred_pfs_supi)
 
 
 #########################################
+
+# GOOGLE + copy/paste
+#    "how to compute auc loop r"
+
+
 # run time ------------------
 myAUC_slow <- function(x,y){
   auc <- c()
@@ -189,42 +306,47 @@ y <- myAUC_slow(x = times, y = pred_pfs_supi)
 ###### ---------------------
 # runtime test
 
-time_points <- 0:10000    
-cum_surv <- runif(10000)  
-t1 <- Sys.time()
-y<-myAUC_slow(x = time_points, y = cum_surv)
-t2 <- Sys.time()
-t2- t1
 
-####
-time_points <- 0:50000                      
-cum_surv <- runif(50000)  
+test_time_points <- 1:10000
+test_cum_surv <- runif(10000)
 t1 <- Sys.time()
-y <- myAUC(x = time_points, y = cum_surv)
+y <- myAUC_slow(x = test_time_points, y = test_cum_surv)
 t2 <- Sys.time()
-t2- t1
+t2 - t1
+
+
+test_time_points <- 1:50000
+test_cum_surv <- runif(50000)
+t1 <- Sys.time()
+y <- myAUC(x = test_time_points, y = test_cum_surv)
+t2 <- Sys.time()
+t2 - t1
 
 
 myAUC_fast <- function(x,y){
-  auc <- ( (y[2:length(y)] +  y[1:length(y)-1]) / 2 ) * (x[2:length(x)] - x[1:length(x)-1])
+  auc <- ( (y[2:length(y)] +  y[1:(length(y)-1)]) / 2 ) * (x[2:length(x)] - x[1:(length(x)-1)])
   return(auc)
 }
-time_points <- 0:50000                      
-cum_surv <- runif(50000)  
+
+test_time_points <- 1:50000
+test_cum_surv <- runif(50000)
 t1 <- Sys.time()
-myAUC_fast(x = time_points, y = cum_surv)
+y <- myAUC_fast(x = test_time_points, y = test_cum_surv)
 t2 <- Sys.time()
-t2- t1
+t2 - t1
 
-
-
-############################
 
 mat_auc <- apply(mat_surv,MARGIN = 2,FUN = myAUC, x = times)
 
 mat_auc <- apply(mat_surv,MARGIN = 2,FUN = function(col){
   myAUC(x = times, y = col)
 })
+
+
+# -------------------------------------------------
+# BREAK -------------------------
+# -------------------------------------------------
+
 
 
 mat_auc
@@ -281,15 +403,9 @@ q_pfs_soc <- mat_auc[,"pred_pfs_soc"] * u_pfs
 q_pps_soc <- mat_auc[,"pred_pps_soc"] * u_pps
 
 # combines costs and qalys into matrices
-c_mat <- cbind(
-  c_pfs_supi,c_pps_supi, 
-  c_pfs_soc, c_pps_soc
-)
+c_mat <- cbind(c_pfs_supi, c_pps_supi, c_pfs_soc, c_pps_soc)
 
-q_mat <- cbind(
-  q_pfs_supi,q_pps_supi,
-  q_pfs_soc,q_pps_soc
-)
+q_mat <- cbind(q_pfs_supi, q_pps_supi, q_pfs_soc, q_pps_soc)
 
 
 # Define discount function and apply it to costs and qalys
