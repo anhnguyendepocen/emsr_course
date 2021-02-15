@@ -13,5 +13,5 @@ The subfolders contain the following contents:
 
 * `/data`: data sets that we use for the PSM model and for the exercises.
 
-* `prm.Rmd`: contains the source code for the PSM-part of the course book.
+* `psm.Rmd`: contains the source code for the PSM-part of the course book.
 
