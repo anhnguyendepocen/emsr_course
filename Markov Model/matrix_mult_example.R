@@ -41,10 +41,13 @@ non_matrix_mult <- function(v, m){
 # both give same results
 matrix_mult(v = v_B,m = m_A) == matrix_mult(v = v_B,m = m_A)
 
-# difference is huge
+# the time difference is huge
 tm <- microbenchmark::microbenchmark(
-  matrix_mult(v = v_B,m = m_A),
-  non_matrix_mult(v = v_B,m = m_A)
+  
+  matrix_mult(v = v_B, m = m_A),
+  
+  non_matrix_mult(v = v_B, m = m_A)
+  
 )
 
 autoplot(tm,log = T)
