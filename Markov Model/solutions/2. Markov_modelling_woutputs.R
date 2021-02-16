@@ -1,52 +1,27 @@
 #########              Sick-Sicker Markov model                 #####################
 
+# We use the following code as an example in the open source paper here:
+# Smith R and Schneider P. Making health economic models Shiny: A tutorial. Wellcome Open Res 2020.
+
 #####################################################################################
-## This code forms the basis for the cohort model of the article:                  ## 
-## 'Microsimulation modeling for health decision sciences using R: a tutorial'     ##
+## The code was originally created by the below, it's a widely used teaching model ##
 ## Authors: Eline Krijkamp, Fernando Alarid-Escudero,                              ##
 ##          Eva Enns, Hawre Jalal, Myriam Hunink and  Petros Pechlivanoglou        ##
-## citation below                                                                  ##
+## Krijkamp EM, et al. Microsimulation modeling for health decision sciences       ##
+## using R: a tutorial. Med. Decis. Making. 2018;.                                 ##
 #####################################################################################
 
-# Developed by the Decision Analysis in R for Technologies in Health (DARTH) group
-# Fernando Alarid-Escudero, PhD (1) 
-# Eva A. Enns, MS, PhD (1)	
-# M.G. Myriam Hunink, MD, PhD (2,3)
-# Hawre J. Jalal, MD, PhD (4) 
-# Eline M. Krijkamp, MSc (2)	
-# Petros Pechlivanoglou, PhD (5) 
-
-# In collaboration of: 		
-# 1 University of Minnesota School of Public Health, Minneapolis, MN, USA
-# 2 Erasmus MC, Rotterdam, The Netherlands
-# 3 Harvard T.H. Chan School of Public Health, Boston, USA
-# 4 University of Pittsburgh Graduate School of Public Health, Pittsburgh, PA, USA
-# 5 The Hospital for Sick Children, Toronto and University of Toronto, Toronto ON, Canada
-
-#####################################################################################
-# Please cite our publications when using this code
-# Jalal H, et al. An Overview of R in Health Decision Sciences. Med. Decis. Making. 2017; 37(3): 735-746. 
-# Krijkamp EM, et al. Microsimulation modeling for health decision sciences using R: a tutorial. Med. Decis. Making. 2018;. 
-
-#####################################################################################
-# Copyright 2017, THE HOSPITAL FOR SICK CHILDREN AND THE COLLABORATING INSTITUTIONS. 
-# All rights reserved in Canada, the United States and worldwide.  
-# Copyright, trademarks, trade names and any and all associated intellectual property are exclusively owned by THE HOSPITAL FOR SICK CHILDREN and the 
-# collaborating institutions and may not be used, reproduced, modified, distributed or adapted in any way without written permission.
-
-#####################################################################################
+# the code has been adapted slightly for the purposes of teaching Shiny.
 
 rm(list = ls())  # delete everything that is in R's memory
 
 #####################################################################################
 
-
-
-Strategies <- c("No Treatment", "Treatment")  # strategy names 
+Strategies     <- c("No Treatment", "Treatment")     # strategy names 
 n_age_init     <- 25                                 # age at baseline
-n_age_max <- 55                                 # maximum age of follow up
-n_t  <- n_age_max - n_age_init                         # time horizon, number of cycles
-d_r <- 0.03                                   # equal discount of costs and QALYs by 3%
+n_age_max      <- 55                                 # maximum age of follow up
+n_t            <- n_age_max - n_age_init             # time horizon, number of cycles
+d_r            <- 0.035                              # equal discount of costs and QALYs by 3%
 
 # Transition probabilities (per cycle)
 p_HD    <- 0.005           # probability to die when healthy
@@ -90,7 +65,7 @@ n_states <- length(v_n)                            # number of health states
 ############################### Markov Model  ###########################
 
 #transition probability matrix for NO treatment
-m_P <- matrix(data = 0,
+m_P <- matrix(data = NA,
               nrow = n_states, 
               ncol = n_states,
               dimnames = list(v_n, v_n))
@@ -98,23 +73,19 @@ m_P <- matrix(data = 0,
 m_P
 
 ### From Healthy
-m_P["H", "H"]  <- 1 - (p_HS1 + p_HD)
-m_P["H", "S1"] <- p_HS1
-m_P["H", "D"]  <- p_HD
+m_P["H", ]  <- c(1 - (p_HS1 + p_HD), p_HS1, 0, p_HD)
+
 ### From Sick
-m_P["S1", "H"]  <- p_S1H
-m_P["S1", "S1"] <- 1 - (p_S1H + p_S1S2 + p_S1D)
-m_P["S1", "S2"] <- p_S1S2
-m_P["S1", "D"]  <- p_S1D
+m_P["S1", ]  <- c(p_S1H, 1 - (p_S1H + p_S1S2 + p_S1D), p_S1S2, p_S1D)
+
 ### From Sicker
-m_P["S2", "S2"] <- 1 - p_S2D
-m_P["S2", "D"]  <- p_S2D
+m_P["S2", ]   <- c(0, 0, 1 - p_S2D, p_S2D)
+
 ### From Dead
-m_P["D", "D"] <- 1
+m_P["D", ] <- c(0, 0, 0, 1)
 
 # check rows add up to 1
 rowSums(m_P)
-
 m_P
 
 # create empty Markov trace 
@@ -131,8 +102,10 @@ m_TR[1, ] <- c(1, 0, 0, 0)
 head(m_TR)  # head shows us the first six rows by default. 
 
 for (t in 1:n_t){ # throughout the number of cycles
+  
   # estimate next cycle (t+1) of Markov trace
-  m_TR[t + 1, ] <- m_TR[t, ] %*% m_P           
+  m_TR[t + 1, ] <- m_TR[t, ] %*% m_P 
+  
 }
 
 head(m_TR)  # head shows us the first six rows by default. 
@@ -140,7 +113,7 @@ head(m_TR)  # head shows us the first six rows by default.
 
 ############################  Outputs  ############################################
 
-# create vectors of utility and costs for each state
+#  1. Create vectors for the costs and utility of each treatment group 
 v_u_trt    <- c(u_H, u_Trt, u_S2, u_D)
 v_u_no_trt <- c(u_H, u_S1, u_S2, u_D)
 v_c_trt    <- c(c_H, c_S1 + c_Trt, c_S2 + c_Trt, c_D)
@@ -151,7 +124,7 @@ v_u_no_trt
 v_c_trt
 v_c_no_trt
 
-# estimate mean QALYs and costs
+#  2. Estimate mean costs and QALYs for each year (hint: need to use matrix multiplication)
 v_E_no_trt <- m_TR %*% v_u_no_trt
 v_E_trt    <- m_TR %*% v_u_trt
 v_C_no_trt <- m_TR %*% v_c_no_trt
@@ -162,12 +135,13 @@ head(v_E_trt)
 head(v_C_no_trt)
 head(v_C_trt)
 
-### discount costs and QALYs
+#  3. If you didn't in the the previous step, apply discount weights (hint: need to use transpose function t() and matrix multiplication)
 te_no_trt <- t(v_E_no_trt) %*% v_dwe  
 te_trt    <- t(v_E_trt) %*% v_dwe
 tc_no_trt <- t(v_C_no_trt) %*% v_dwc
 tc_trt    <- t(v_C_trt)    %*% v_dwc
 
+#  4. Create results table 
 results <- c(
   "Cost_NoTrt" = tc_no_trt, 
   "Cost_Trt"   = tc_trt, 
