@@ -9,15 +9,3 @@ Relevant papers are listed below:
 
 - Jalal H, et al. An Overview of R in Health Decision Sciences. Med. Decis. Making. 2017; 37(3): 735-746. 
 - Krijkamp EM, et al. Microsimulation modeling for health decision sciences using R: a tutorial. Med. Decis. Making. 2018
-
-The subfolders contain the following contents:
-
-/exercises: three tasks that we will work on during the session.
-
-/solutions: worked out solutions for the three exercises.
-
-/scripts: contains a tidy version of the three-state PSM and some additional code for simulating IPD survival data, plotting survival curves, and teaching notes.
-
-/data: data sets that we use for the PSM model and for the exercises.
-
-psm.Rmd: contains the source code for the PSM-part of the course book.
