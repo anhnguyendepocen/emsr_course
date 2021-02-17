@@ -31,6 +31,21 @@ toc <- Sys.time() # record end time
 toc - tic
 
 
+# plot cost-effectiveness plane
+ggplot(results) +
+  # reference lines (threshold at 20k)
+  geom_vline(xintercept = 0) +
+  geom_hline(yintercept = 0) +
+  geom_abline(slope = 20000, linetype = "dashed") +
+  # PSA icers and mean icer
+  geom_point(aes(x = QALY_Trt-QALY_NoTrt, y = Cost_Trt-Cost_NoTrt), col = "cadetblue", size =.7, alpha =.7) +
+  geom_point(aes(x = mean(QALY_Trt-QALY_NoTrt), y = mean(Cost_Trt-Cost_NoTrt)), col = "blue") +
+  # labels
+  xlab("Incremental QALYs") +
+  ylab("Incremental Costs") +
+  theme_minimal()
+
+
 
 
 
