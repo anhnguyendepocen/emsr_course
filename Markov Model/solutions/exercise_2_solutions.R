@@ -123,7 +123,7 @@ v_C_trt    <- m_T %*% v_c_trt
 
 #  3. If you didn't in the the previous step, apply discount weights (hint: need to use transpose function t() and matrix multiplication)
 d_r            <- 0.035                    # discount rate  
-v_dwe <- v_dwc <- 1 / (1 + d_r) ^ (1:n_t)  # discount weight (equal discounting is assumed for costs and effects)
+v_dwe <- v_dwc <- 1 / (1 + d_r) ^ (0:(n_t-1))  # discount weight (equal discounting is assumed for costs and effects)
 
 te_no_trt <- t(v_E_no_trt) %*% v_dwe  
 te_trt    <- t(v_E_trt) %*% v_dwe
