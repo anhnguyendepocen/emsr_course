@@ -9,7 +9,6 @@
 rm(list =ls())
 
 # load necessary packages
-library(microbenchmark)
 library(ggplot2)
 
 # source custom functions

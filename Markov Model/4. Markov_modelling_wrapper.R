@@ -13,7 +13,6 @@ rm(list = ls())  # delete everything that is in R's memory
 # source custom functions
 source("Markov Model/src/f_gen_psa.R")
 source("Markov Model/src/f_MM_sicksicker.R")
-source("Markov Model/src/f_wrapper.R")
 
 f_wrapper <- function(
   
@@ -33,7 +32,7 @@ f_wrapper <- function(
 ){
   
   # need to specify environment of inner functions (to use outer function environment)
-  # alternatively - define functions within the wrapper function.
+  # alternatively - define functions within the wrapper function: https://adv-r.hadley.nz/environments.html
  environment(f_gen_psa)         <- environment()
  environment(f_MM_sicksicker)   <- environment()
   

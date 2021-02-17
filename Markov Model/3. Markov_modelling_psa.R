@@ -5,6 +5,7 @@
 # contact: info@darkpeakanalytics.com
 # ==============
 
+#install.packages("truncnorm")                install if not already installed
 
 ############### Markov Modelling with PSA ###########################
  
@@ -228,12 +229,6 @@ n_sim   = 1000
 # cost of treatment
 c_Trt   = 50       
 
-#  number of cycles
-n_t <- n_age_max - n_age_init
-# the 4 health states of the model:
-v_n <- c("H", "S1", "S2", "D") 
-# number of health states 
-n_states <- length(v_n) 
 
 # We then create the PSA input using the function we've created 
 
