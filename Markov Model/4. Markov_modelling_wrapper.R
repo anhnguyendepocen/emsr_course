@@ -1,5 +1,19 @@
+# ==============
+# Making Health Economic Modelling Shiny
+# Robert Smith, Paul Schneider & Sarah Bates
+# University of Sheffield
+# contact: info@darkpeakanalytics.com
+# ==============
+
+
 #################### using wrapper function for R shiny #############
 
+rm(list = ls())  # delete everything that is in R's memory
+
+# source custom functions
+source("Markov Model/src/f_gen_psa.R")
+source("Markov Model/src/f_MM_sicksicker.R")
+source("Markov Model/src/f_wrapper.R")
 
 f_wrapper <- function(
   
@@ -20,8 +34,8 @@ f_wrapper <- function(
   
   # need to specify environment of inner functions (to use outer function environment)
   # alternatively - define functions within the wrapper function.
-  environment(f_gen_psa)         <- environment()
-  environment(f_MM_sicksicker)   <- environment()
+ environment(f_gen_psa)         <- environment()
+ environment(f_MM_sicksicker)   <- environment()
   
   #-- Nonadjustable inputs --#
   

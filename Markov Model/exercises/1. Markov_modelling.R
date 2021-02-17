@@ -1,3 +1,10 @@
+# ==============
+# Making Health Economic Modelling Shiny
+# Robert Smith, Paul Schneider & Sarah Bates
+# University of Sheffield
+# contact: info@darkpeakanalytics.com
+# ==============
+
 #########              Sick-Sicker Markov model                 #####################
 
 # We use the following code as an example in the open source paper here:
@@ -23,6 +30,9 @@ n_age_max      <- 55                                 # maximum age of follow up
 n_t            <- n_age_max - n_age_init             # time horizon, number of cycles
 d_r            <- 0.035                              # equal discount of costs and QALYs by 3%
 
+v_n  <- c("H", "S1", "S2", "D")               # the 4 states of the model: Healthy (H), Sick (S1), Sicker                                                  (S2), Dead (D)
+n_states <- length(v_n)                            # number of health states 
+
 # Transition probabilities (per cycle)
 p_HD    <- 0.005           # probability to die when healthy
 p_HS1   <- 0.15          	 # probability to become sick when healthy
@@ -35,13 +45,13 @@ hr_S2   <- 10            	 # hazard ratio of death in sicker vs healthy
 c_H     <- 2000            # cost of remaining one cycle in the healthy state
 c_S1    <- 4000            # cost of remaining one cycle in the sick state
 c_S2    <- 15000           # cost of remaining one cycle in the sicker state
-c_Trt   <- 12000           # cost of treatment(per cycle)
+c_Trt   <- 12000           # cost of treatment(per cycle; S1,S2)
 c_D     <- 0               # cost of being in the death state
 u_H     <- 1               # utility when healthy
 u_S1    <- 0.75            # utility when sick
 u_S2    <- 0.5             # utility when sicker
 u_D     <- 0               # utility when dead
-u_Trt   <- 0.95            # utility when being treated
+u_Trt   <- 0.95            # utility when being treated (S1)
 
 # rate of death in healthy
 r_HD    <- - log(1 - p_HD) 
@@ -58,9 +68,6 @@ p_S2D   <- 1 - exp(-r_S2D)
 
 # calculate discount weight for each cycle
 v_dwe <- v_dwc <- 1 / (1 + d_r) ^ (0:n_t)  # discount weight (equal discounting is assumed for costs and effects)
-
-v_n  <- c("H", "S1", "S2", "D")               # the 4 states of the model: Healthy (H), Sick (S1), Sicker                                                  (S2), Dead (D)
-n_states <- length(v_n)                            # number of health states 
 
 ############################### Markov Model  ###########################
 

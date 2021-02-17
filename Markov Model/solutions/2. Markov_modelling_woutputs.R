@@ -1,3 +1,11 @@
+# ==============
+# Making Health Economic Modelling Shiny
+# Robert Smith, Paul Schneider & Sarah Bates
+# University of Sheffield
+# contact: info@darkpeakanalytics.com
+# ==============
+
+
 #########              Sick-Sicker Markov model                 #####################
 
 # We use the following code as an example in the open source paper here:

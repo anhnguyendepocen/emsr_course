@@ -2,7 +2,7 @@
 # Making Health Economic Modelling Shiny
 # Robert Smith, Paul Schneider & Sarah Bates
 # University of Sheffield
-# contact: rasmith3@sheffield.ac.uk
+# contact: info@darkpeakanalytics.com
 # ==============
 
 # Matrix multiplication exercise solutions
