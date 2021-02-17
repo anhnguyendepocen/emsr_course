@@ -117,16 +117,3 @@ for (t in 1:n_t){ # throughout the number of cycles
 
 head(m_TR)  # head shows us the first six rows by default. 
 
-
-############################  Outputs  ############################################
-
-#  Use the model to estimate cost-effectiveness of the treatment: 
-
-#  1. Create vectors for the costs and utility of each treatment group 
-
-#  2. Estimate mean costs and QALYs for each year (hint: need to use matrix multiplication)
-
-#  3. If you didn't in the part B, apply discount weights (hint: need to use transpose function t() and matrix multiplication)
-
-#  4. Create results table 
-
