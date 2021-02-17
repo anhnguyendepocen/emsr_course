@@ -12,7 +12,7 @@ rm(list = ls())
 # define parameters
 state_names = c("Healthy", "Sick", "Dead")
 n_states = length(state_names)   # the length function is fairly intuitive
-n_t = 10
+n_t = 10     # time horizon
 
 # create transition matrix
 m_P <- matrix(data = NA,
@@ -109,7 +109,12 @@ u_S    <- 0.5             # utility when sick
 u_Trt  <- 0.75            # utility when being treated (S1)
 u_D     <- 0              # utility when dead
 
-#  2. Estimate mean costs and QALYs for each year (hint: need to use matrix multiplication)
+v_u_trt    <- c(u_H, u_Trt, u_D)
+v_u_no_trt <- c(u_H, u_S, u_D)
+v_c_trt    <- c(c_H, c_S + c_Trt, c_D)
+v_c_no_trt <- c(c_H, c_S, c_D)
+
+#  2. Estimate total costs and QALYs for each year (hint: need to use matrix multiplication)
 
 
 #  3. If you didn't in the the previous step, apply discount weights (hint: need to use transpose function t() and matrix multiplication)
