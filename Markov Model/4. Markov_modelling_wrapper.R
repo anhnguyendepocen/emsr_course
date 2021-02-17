@@ -32,7 +32,9 @@ f_wrapper <- function(
 ){
   
   # need to specify environment of inner functions (to use outer function environment)
-  # alternatively - define functions within the wrapper function: https://adv-r.hadley.nz/environments.html
+  # alternatively - define functions within the wrapper function. 
+  # More information: https://adv-r.hadley.nz/environments.html
+  
  environment(f_gen_psa)         <- environment()
  environment(f_MM_sicksicker)   <- environment()
   
