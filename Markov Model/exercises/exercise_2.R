@@ -65,48 +65,23 @@ m_T
 # more robust, look at summary
 summary(rowSums(m_T))
 
-# Wrap this whole process into a function that takes as arguments:
-# 1) an initialized Markov Trace.
-# 2) transition Matrix 
-# arguments.
-
-# create a new markov trace with the same initial values
-m_T2 <- m_T * NA
-m_T2[1, ] <- c(1, 0, 0)
-
-
-runMarkov <- function(m_P = NULL, 
-                      m_T = NULL){
-  
-  for(t in 2:nrow(m_T)){
-    
-    m_T[t, ] <- m_T[t-1, ] %*% m_P
-    
-  }
-  
-  return(m_T)
-  
-  
-}
-
-# run this and assign to a new markov trace
-m_T2 <- runMarkov(m_P = m_P,  m_T = m_T2)
-
-# check these give the same results
-m_T == m_T2
-
 ######## Exercise 2 #########
 
-#  1. Create vectors for the costs and utility of each treatment group, assume treatment cost
-#  and utility is applied in the sick state of the model
+# In this simple exercise the treatment results in higher utility in the sick state
+# but this has a cost
 
+#  1. Create vectors for the costs and utility of each treatment group, assume treatment cost
+#  and utility is applied in the sick state of the model.
+
+# Costs
 c_H     <- 100            # cost of remaining one cycle in the healthy state
 c_S     <- 200            # cost of remaining one cycle in the sick state
 c_Trt   <- 50             # cost of treatment in sick state
 c_D     <- 0              # cost of being in the death state
+# Utilities
 u_H     <- 1              # utility when healthy
-u_S    <- 0.5             # utility when sick
-u_Trt  <- 0.75            # utility when being treated (S1)
+u_S     <- 0.5            # utility when sick
+u_Trt   <- 0.75           # utility when Sick but being treated
 u_D     <- 0              # utility when dead
 
 v_u_trt    <- c(u_H, u_Trt, u_D)
@@ -115,11 +90,15 @@ v_c_trt    <- c(c_H, c_S + c_Trt, c_D)
 v_c_no_trt <- c(c_H, c_S, c_D)
 
 #  2. Estimate total costs and QALYs for each year (hint: need to use matrix multiplication)
+# can either use normal or matrix multiplication.
+
 
 
 #  3. If you didn't in the the previous step, apply discount weights (hint: need to use transpose function t() and matrix multiplication)
+#     Ignore half-cycle correction here.
+
 d_r            <- 0.035                    # discount rate  
-v_dwe <- v_dwc <- 1 / (1 + d_r) ^ (0:n_t)  # discount weight (equal discounting is assumed for costs and effects)
+v_dwe <- v_dwc <- 1 / (1 + d_r) ^ (0:(n_t-1))  # discount weight (equal discounting is assumed for costs and effects)
 
 #  4. Create results table 
 
