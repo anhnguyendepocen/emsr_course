@@ -12,7 +12,7 @@ rm(list = ls())
 # define parameters
 state_names = c("Healthy", "Sick", "Dead")
 n_states = length(state_names)   # the length function is fairly intuitive
-n_t = 10
+n_t = 10     # time horizon
 
 # create transition matrix
 m_P <- matrix(data = NA,
