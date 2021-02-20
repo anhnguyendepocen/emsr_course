@@ -1,7 +1,7 @@
 # ==============
-# Making Health Economic Modelling Shiny
+# Making Health Economic Models Shiny: A tutorial
 # Robert Smith, Paul Schneider & Sarah Bates
-# University of Sheffield
+# University of Sheffield & Dark Peak Analytics
 # contact: info@darkpeakanalytics.com
 # ==============
 
