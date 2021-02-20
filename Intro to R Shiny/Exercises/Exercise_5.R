@@ -28,6 +28,7 @@ library(shinythemes)
 
 ## e) instead of x and y, plot the output from f_wrapper:
 ##    i.e. plot the incremental costs against the incremental QALYs
+##    set limits for the x-axis: 0 - 10000; and for the y-axis: 0 - 1.5
 
 
 #================================================================
@@ -50,7 +51,7 @@ ui <- fluidPage(    # create user interface using fluidpage function
                    label = "Number X",          # label next to numeric input
                    value = 200,               # initial value
                    min = 0,                   # minimum value allowed
-                   max = 100000),              # maximum value allowed
+                   max = 1000),              # maximum value allowed
       
       numericInput(inputId = "y",      # id of input, used in server
                    label = "Number Y",        # label next to numeric input

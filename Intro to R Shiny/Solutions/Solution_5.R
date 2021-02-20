@@ -34,7 +34,7 @@ ui <- fluidPage(    # create user interface using fluidpage function
                    label = "Treatment Costs", # label next to numeric input
                    value = 200,               # initial value
                    min = 0,                   # minimum value allowed
-                   max = 100000),              # maximum value allowed
+                   max = 1000),              # maximum value allowed
       
       numericInput(inputId = "y",      # id of input, used in server
                    label = "PSA runs",        # label next to numeric input
@@ -88,8 +88,13 @@ server <- function(input, output){   # server = function with two inputs
                  #--- CREATE GRAPH IN SERVER ---#
                  output$graph <- renderPlot({
                    
-                   plot(x = isolate(model_res$Cost_Trt-model_res$Cost_NoTrt), 
-                        y = isolate(model_res$QALY_Trt-model_res$QALY_NoTrt))
+                   plot(
+                     x = isolate(model_res$Cost_Trt-model_res$Cost_NoTrt), 
+                     y = isolate(model_res$QALY_Trt-model_res$QALY_NoTrt),
+                     xlim = c(0,10000),
+                     ylim = c(0,1.5)
+                   )
+                   abline(h=0, v=0)
 
                  }) # render Text end.
                  
