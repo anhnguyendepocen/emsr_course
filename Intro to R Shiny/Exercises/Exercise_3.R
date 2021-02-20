@@ -19,8 +19,6 @@ library(shiny)
 
 ui <- fluidPage(    # create user interface using fluidpage function
 
-  titlePanel("More complex model"),   # title of app
-  
 # a)  In the Sidebar Layout page add two inputs:  
 #      i)  Slider input, z, with a initial value of 25 and a range on 10 - 80 (Hint: use the sliderInput function)
 #      ii) Action button which is referred to as: run_model .

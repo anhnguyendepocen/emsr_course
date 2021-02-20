@@ -11,7 +11,7 @@ rm(list = ls())
 
 # we need the function shiny installed, this loads it from the library.
 library(shiny)             
-
+library(shinythemes)
 # a) Customize your app and include a plot. For example you may want to add:
 #   A title to the app.
 #   Add an explanation of the equations used in the function.
@@ -27,7 +27,8 @@ library(shiny)
 #================================================================
 
 ui <- fluidPage(    # create user interface using fluidpage function
-
+  theme = shinytheme("superhero"),    # set a theme for your app
+  # see https://rstudio.github.io/shinythemes/ for more options                       
   titlePanel("More complex model"),   # title of app
   
 
@@ -102,7 +103,7 @@ server <- function(input, output){   # server = function with two inputs
   #--- CREATE GRAPH IN SERVER ---#
                  output$graph <- renderPlot({
                    
-                   plot(input$x, input$y)
+                   plot(isolate(input$x), isolate(input$y))
     
      }) # render Text end.
   

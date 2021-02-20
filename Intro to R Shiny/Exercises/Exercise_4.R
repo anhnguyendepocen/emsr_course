@@ -16,11 +16,16 @@ library(shiny)
 #   A title to the app.
 #   Add an explanation of the equations used in the function.
 #   Add text to the sidebar panel.
-#   To change the theme.
+#   Set a custom theme for your app.
+    # Hint: For this, you first have to install shinythemes:
+    # install.packages("shinythemes")
+    # Go to https://rstudio.github.io/shinythemes/ 
+    # Use the theme you like the most.
 
 # b) Add a scatter plot with the x input on the X axis and the y input on the Y axis. 
 # To do this you will need to use plotOutput() in the user interface function and 
-# renderPlot in the server function. (Hint, to create a simple scatter plot, use the plot() function, e.g. plot(x,y)
+# renderPlot in the server function. 
+# Hint: to create a simple scatter plot, use the plot() function, e.g. plot(x,y)
 
 #================================================================
 #                   Create User Interface
