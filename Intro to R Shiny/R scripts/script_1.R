@@ -1,11 +1,8 @@
 # ==============
-# 
-# SCRIPT 1
-#
-# Making Markov Models Shiny 
-# Robert Smith & Paul Schneider
+# Making Health Economic Modelling Shiny
+# Robert Smith, Paul Schneider & Sarah Bates
 # University of Sheffield
-# contact: rasmith3@sheffield.ac.uk
+# contact: info@darkpeakanalytics.com
 # ==============
 
 # install.packages("shiny") # necessary if you don't already have the function 'shiny' installed.
@@ -42,4 +39,4 @@ server <- function(input, output){
 
 ## ----- run app------
 
-shinyApp(ui, server)
+shinyApp(ui = ui, server = server)

@@ -1,14 +1,12 @@
 # ==============
-# 
-# SCRIPT Answer 1.a
-#
-# Making Markov Models Shiny 
-# Robert Smith & Paul Schneider
+# Making Health Economic Modelling Shiny
+# Robert Smith, Paul Schneider & Sarah Bates
 # University of Sheffield
-# contact: rasmith3@sheffield.ac.uk
+# contact: info@darkpeakanalytics.com
 # ==============
 
-rm(list = ls())
+
+# Exercise 1. Create a new Shiny app that contains the text "Hello <your name>".
 
 # install.packages("shiny") # necessary if you don't already have the function 'shiny' installed.
 
@@ -20,23 +18,9 @@ library(shiny)
 #                   Create User Interface
 #================================================================
 
-ui <- fluidPage(    # create user interface using fluidpage function
+ui <- fluidPage(    # create user interface using fluid-page function
   
-  titlePanel("More complex model"),   # title of app
-  
-  # SIDEBAR
-  sidebarLayout(    # indicates layout is going to be a sidebar-layout
-    
-    sidebarPanel( # open sidebar panel
-      
-    ),  # close sidebarPanel
-    
-    mainPanel(                                # open main panel
-      
-    ) # close mainpanel    
-    
-  ) # close sidebarlayout
-  
+
 ) # close UI fluidpage
 
 
@@ -44,9 +28,10 @@ ui <- fluidPage(    # create user interface using fluidpage function
 #                     Create Server Function
 #================================================================
 
-server <- function(input, output){   # server = function with two inputs
+server <- function(input, output){   
   
-  
+  # server function
+
   
 } # Server end
 
@@ -56,4 +41,4 @@ server <- function(input, output){   # server = function with two inputs
 
 ## ----- run app------
 
-shinyApp(ui, server)
+shinyApp(ui = ui, server = server)

@@ -1,11 +1,8 @@
 # ==============
-# 
-# SCRIPT 6
-#
-# Making Markov Models Shiny 
-# Robert Smith & Paul Schneider
+# Making Health Economic Modelling Shiny
+# Robert Smith, Paul Schneider & Sarah Bates
 # University of Sheffield
-# contact: rasmith3@sheffield.ac.uk
+# contact: info@darkpeakanalytics.com
 # ==============
 
 rm(list = ls())
@@ -15,66 +12,65 @@ rm(list = ls())
 # we need the function shiny installed, this loads it from the library.
 library(shiny)             
 
-#================================================================
-#                          Simple Function                      
-#================================================================
+# a) Customize your app and include a plot. For example you may want to add:
+#   A title to the app.
+#   Add an explanation of the equations used in the function.
+#   Add text to the sidebar panel.
+#   To change the theme.
 
-fun_shiny <- function(x,y,z){
-  
-  max_minus_mean = max(c(x,y,z)) - mean(c(x,y,z))
-  
-  max_minus_mean
-  
-}
-
+# b) Add a scatter plot with the x input on the X axis and the y input on the Y axis. 
+# To do this you will need to use plotOutput() in the user interface function and 
+# renderPlot in the server function. (Hint, to create a simple scatter plot, use the plot() function, e.g. plot(x,y)
 
 #================================================================
 #                   Create User Interface
 #================================================================
 
 ui <- fluidPage(    # create user interface using fluidpage function
-  
+
   titlePanel("More complex model"),   # title of app
+  
+
   
   # SIDEBAR
   sidebarLayout(    # indicates layout is going to be a sidebar-layout
     
     sidebarPanel( # open sidebar panel
       
-      numericInput(inputId = "SI_X",      # id of input, used in server
-                   label = "Number X",  # label next to numeric input
+      numericInput(inputId = "x",           # id of input, used in server
+                   label = "Number X",          # label next to numeric input
                    value = 200,               # initial value
                    min = 0,                   # minimum value allowed
-                   max = 400),                # maximum value allowed
-      
-      numericInput(inputId = "SI_Y",      # id of input, used in server
+                   max = 100000),              # maximum value allowed
+                   
+      numericInput(inputId = "y",      # id of input, used in server
                    label = "Number Y",        # label next to numeric input
-                   value = 1000,              # initial value
+                   value = 200,              # initial value
                    min = 0,                   # minimum value allowed
-                   max = 2000),                # maximum value allowed
-      
-      sliderInput(inputId = "SI_Z",  # id of input, used in server
+                   max = 400),                # maximum value allowed
+
+      sliderInput(inputId = "z",  # id of input, used in server
                   label = "Number Z",      # label next to numeric input
                   value = 25,                 # initial value
                   min = 10,                   # minimum value allowed
-                  max = 1000),                  # maximum value allowed
-      
+                  max = 80),                  # maximum value allowed
+
       
       actionButton(inputId = "run_model",     # id of action button, used in server
                    label   = "Run model")     # action button label (on button)
       
+      
     ),  # close sidebarPanel
     
-    mainPanel(                                # open main panel
+    mainPanel(            # open main panel
       
-      h3("Results"),                    # heading (results)                
+      h3("Results") , 
       
-      textOutput(outputId = "printvalue")                    # heading (results table)                
+      plotOutput(outputId = "graph")
       
-      
-    ) # close main panel    
+    ) # close mainpanel    
     
-  ) # close sidebar layout
+  ) # close sidebarlayout
   
 ) # close UI fluid page
 
@@ -85,27 +81,33 @@ ui <- fluidPage(    # create user interface using fluidpage function
 
 server <- function(input, output){   # server = function with two inputs
   
+
+  fun_shiny <- function(x,y,z){
+    
+    max_minus_mean = max(c(x,y,z)) - mean(c(x,y,z))
+    
+    max_minus_mean
+    
+  }
   
   
   observeEvent(input$run_model,       # when action button pressed ...
                ignoreNULL = F, {
                  
-                 num = fun_shiny(x = input$SI_X,
-                                 y = input$SI_Y,
-                                 z = input$SI_Z)
+                 num = fun_shiny(x = input$x,
+                                 y = input$y,
+                                 z = input$z)
                  
-                #--- CREATE NUMBER IN SERVER ---#
-               
-                 output$printvalue <- renderText({
-                  
-                  paste("The difference between the maximum and the mean of x, y, and z is:", round(num,1))
-                  
-                }) # render Text end.
-                
-                 
-               }) # Observe Event End  
+
+  #--- CREATE GRAPH IN SERVER ---#
+                 output$graph <- renderPlot({
+                   
+                   plot(input$x, input$y)
+    
+     }) # render Text end.
   
-  
+  }) # Observe Event End  
+
 } # Server end
 
 
