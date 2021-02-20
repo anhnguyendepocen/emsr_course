@@ -18,7 +18,14 @@ library(shiny)
 #================================================================
 
 ui <- fluidPage(    # create user interface using fluidpage function
+
+  titlePanel("More complex model"),   # title of app
   
+  # SIDEBAR
+  sidebarLayout(    # indicates layout is going to be a sidebar-layout
+    
+    sidebarPanel( # open sidebar panel
+      
       numericInput(inputId = "x",           # id of input, used in server
                    label = "Number X",          # label next to numeric input
                    value = 200,               # initial value
@@ -32,11 +39,19 @@ ui <- fluidPage(    # create user interface using fluidpage function
                    max = 400),                # maximum value allowed
                    
       actionButton(inputId = "run_model",     # id of action button, used in server
-                   label   = "Run model"), # action button end
+                   label   = "Run model") # action button end
       
+    ),  # close sidebarPanel
+    
+    mainPanel(            # open main panel
       
+      h3("Results") ,  
+    
       textOutput(outputId = "printvalue")     # text output                
       
+    ) # close mainpanel    
+    
+  ) # close sidebarlayout
   
 ) # close UI fluid page
 

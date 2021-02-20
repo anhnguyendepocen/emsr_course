@@ -1,0 +1,13 @@
+name: new_app
+title: new_app
+username:
+account: sebates
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 3669403
+bundleId: 4248433
+url: https://sebates.shinyapps.io/new_app/
+when: 1613823919.60042
+asMultiple: FALSE
+asStatic: FALSE
+ignoredFiles: script_2.R|script_3.R|Exercise Answers

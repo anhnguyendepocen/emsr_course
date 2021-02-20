@@ -1,7 +1,4 @@
 # ==============
-# 
-# SCRIPT 7
-#
 # Making Markov Models Shiny 
 # Robert Smith & Paul Schneider
 # University of Sheffield
@@ -14,7 +11,9 @@
 library(shiny)             
 
 # source the wrapper function.
-sapply(list.files("./Markov Model/R scripts",full.names=T), source)
+#source("Markov Model/src/f_gen_psa.R")
+#source("Markov Model/src/f_MM_sicksicker.R")
+#source("Markov Model/src/f_wrapper.R")
 
 #================================================================
 #                   Create User Interface

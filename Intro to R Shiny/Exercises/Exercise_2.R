@@ -7,6 +7,9 @@
 
 rm(list = ls())
 
+## Exercise 2
+
+
 # install.packages("shiny") # necessary if you don't already have the function 'shiny' installed.
 
 # we need the function shiny installed, this loads it from the library.
@@ -26,7 +29,11 @@ ui <- fluidPage(    # create user interface using fluidpage function
                    min = 0,                   # minimum value allowed
                    max = 100000),                # maximum value allowed
 
-    
+# a) Add a second numeric input, y, with initial value of 200 and a range of 0 - 400
+
+
+
+            
       textOutput(outputId = "printvalue")                    # heading (results table)                
       
 
@@ -40,11 +47,12 @@ ui <- fluidPage(    # create user interface using fluidpage function
 
 server <- function(input, output){   # server = function with two inputs
   
+# b) Take the sum of x and y and show the result as as a text output.  
                  
                  #--- CREATE NUMBER IN SERVER ---#
                  output$printvalue <- renderText({
                    
-                   paste("number x 10 = ", input$x * 10)
+                 
                    
                  }) # render Text end.
                  
