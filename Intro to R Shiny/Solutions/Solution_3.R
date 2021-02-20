@@ -1,7 +1,7 @@
 # ==============
-# Making Health Economic Modelling Shiny
+# Making Health Economic Models Shiny: A tutorial
 # Robert Smith, Paul Schneider & Sarah Bates
-# University of Sheffield
+# University of Sheffield & Dark Peak Analytics
 # contact: info@darkpeakanalytics.com
 # ==============
 
@@ -9,8 +9,7 @@ rm(list = ls())
 
 # install.packages("shiny") # necessary if you don't already have the function 'shiny' installed.
 
-# we need the function shiny installed, this loads it from the library.
-library(shiny)             
+library(shiny)  # we need the function shiny installed, this loads it from the library.           
 
 
 #================================================================

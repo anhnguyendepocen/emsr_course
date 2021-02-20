@@ -1,7 +1,7 @@
 # ==============
-# Making Health Economic Modelling Shiny
+# Making Health Economic Models Shiny: A tutorial
 # Robert Smith, Paul Schneider & Sarah Bates
-# University of Sheffield
+# University of Sheffield & Dark Peak Analytics
 # contact: info@darkpeakanalytics.com
 # ==============
 
@@ -9,8 +9,7 @@ rm(list = ls())
 
 # install.packages("shiny") # necessary if you don't already have the function 'shiny' installed.
 
-# we need the function shiny installed, this loads it from the library.
-library(shiny)             
+library(shiny)  # we need the function shiny installed, this loads it from the library.           
 
 # a) Customize your app and include a plot. For example you may want to add:
 #   A title to the app.
@@ -42,20 +41,20 @@ ui <- fluidPage(    # create user interface using fluidpage function
     
     sidebarPanel( # open sidebar panel
       
-      numericInput(inputId = "x",           # id of input, used in server
-                   label = "Number x",          # label next to numeric input
+      numericInput(inputId = "x",             # id of input, used in server
+                   label = "Number x",        # label next to numeric input
                    value = 200,               # initial value
                    min = 0,                   # minimum value allowed
-                   max = 100000),              # maximum value allowed
+                   max = 100000),             # maximum value allowed
                    
-      numericInput(inputId = "y",      # id of input, used in server
+      numericInput(inputId = "y",             # id of input, used in server
                    label = "Number Y",        # label next to numeric input
-                   value = 200,              # initial value
+                   value = 200,               # initial value
                    min = 0,                   # minimum value allowed
                    max = 400),                # maximum value allowed
 
-      sliderInput(inputId = "z",  # id of input, used in server
-                  label = "Number Z",      # label next to numeric input
+      sliderInput(inputId = "z",              # id of input, used in server
+                  label = "Number Z",         # label next to numeric input
                   value = 25,                 # initial value
                   min = 10,                   # minimum value allowed
                   max = 80),                  # maximum value allowed
@@ -71,7 +70,9 @@ ui <- fluidPage(    # create user interface using fluidpage function
       
       h3("Results") , 
       
-      plotOutput(      )
+      plotOutput( 
+        # < insert code here > #     
+                 )
       
     ) # close mainpanel    
     
@@ -107,9 +108,10 @@ server <- function(input, output){   # server = function with two inputs
   #--- CREATE GRAPH IN SERVER ---#
                  output$graph <- renderPlot({
                    
-         
-    
-     }) # render Text end.
+                   
+                   # < insert code here > #  
+                   
+                   }) # render Text end.
   
   }) # Observe Event End  
 
