@@ -1,0 +1,84 @@
+---
+title: 'Making Health Economics Shiny: A tutorial'
+author: "Robert Smith, Paul Schneider & Sarah Bates"
+date: "18/02/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Introduction
+
+R Markdown documents can be used to write reports. In this example I am rendering this report to PDF, but it could be output in Word or as an online document (like the course material).
+
+# The Sick Sicker Model Results
+
+```{r, echo = F}
+
+library(ggplot2)
+library(truncnorm)
+
+# define folders (relative not working)
+course_folder = "C:/Users/Robert/Google Drive/Dark Peak Analytics/emsr_course"
+src_folder = "Markov Model/src"
+plot_folder = "Advanced R Shiny/HE_Plots"
+
+# source the scripts that contain the model functions from the Markov Model/src folder.
+source(paste0(course_folder, "/", src_folder, "/", "f_gen_psa.R"))
+source(paste0(course_folder, "/", src_folder,"/", "f_MM_sicksicker.R"))
+source(paste0(course_folder, "/", src_folder,"/", "f_wrapper.R"))
+source(paste0(course_folder, "/", plot_folder,"/","plotCEAC.R"))
+source(paste0(course_folder, "/", plot_folder,"/","plotCEP.R"))
+
+params <- list(
+  initial_age = 20,
+  maximum_age = 75,
+  discount_rate = 0.035,
+  n_iterations = 1000,
+  drug_price = 200)
+
+```
+We can run the entire model from within Rmarkdown, and produce outputs:
+
+```{r, echo=TRUE, message=FALSE}
+
+df_results <- f_wrapper(n_age_init = params$drug_price,
+                        n_age_max  = params$n_iterations,
+                        d_r        = params$discount_rate,
+                        n_sim      = params$n_iterations,
+                        c_Trt      = params$drug_price)
+
+head(df_results)
+
+```
+
+
+## Including Plots
+
+You can also embed plots, for example here is a the Cost Effectiveness Plane.
+
+```{r, echo=TRUE, message=FALSE}
+
+plotCEP(df_results)
+
+```
+
+```{r, echo=FALSE, message=FALSE}
+
+ICER <- sum(df_results$Cost_Trt - df_results$Cost_NoTrt) / sum(df_results$QALY_Trt - df_results$QALY_NoTrt)
+
+```
+
+Note that the text can include model results. For example I could say that the ICER is 
+`r paste0("£", round(ICER,2))`
+
+# Exercise
+
+1. Your client has mentioned that their treatment cost is now £375, rather than the £200 stated in the previous report. They would like to see an identical report to that shown above, but with an updated cost-effectiveness plane and ICER.
+
+2. Your client would like to see the CEAC curve and for the insertion of a paragraph at the beginning with the inputs to the Sick-Sicker function defined. (Ensure you do this so that the entire document can be updated by one change).
+
+3. The decision body has changed its discount rate from 3.5% to 1.5%. Please update the entire report.
+
