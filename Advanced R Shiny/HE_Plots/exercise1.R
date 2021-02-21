@@ -129,6 +129,8 @@ cep_plot = cep_plot +
   # HINT: NESTED FUNCTIONS
 
   
+# Extension: Add these fancy plots in to your app instead of the simple plot you had last time.
+  
 
   
 
