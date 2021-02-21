@@ -25,7 +25,7 @@ ui <- fluidPage(    # create user interface using fluidpage function
                    label = "number",         # label next to numeric input
                    value = 200,              # initial value
                    min = 0,                  # minimum value allowed
-                   max = 100000),            # maximum value allowed
+                   max = 1000),            # maximum value allowed
 
 # a) Add a second numeric input, y, with initial value of 200 and a range of 0 - 400
 
