@@ -19,27 +19,14 @@ library(shiny)
 
 ui <- fluidPage(    # create user interface using fluidpage function
   
-  titlePanel("Multiply a number by 10"),   # title of app
-  
-  # SIDEBAR
-  sidebarLayout(    # indicates layout is going to be a sidebar-layout
-    
-    sidebarPanel( # open sidebar panel
-      
-      numericInput(inputId = "num",      # id of input, used in server
+      numericInput(inputId = "x",      # id of input, used in server (https://shiny.rstudio.com/gallery/widget-gallery.html)
                    label = "number",  # label next to numeric input
                    value = 200,               # initial value
                    min = 0,                   # minimum value allowed
-                   max = 100000)                # maximum value allowed
-    ),  # close sidebarPanel
-    
-    mainPanel(                                # open main panel
-      
+                   max = 1000),                # maximum value allowed
+
       textOutput(outputId = "printvalue")                    # heading (results table)                
       
-    ) # close mainpanel    
-    
-  ) # close sidebarlayout
   
 ) # close UI fluidpage
 
@@ -54,7 +41,7 @@ server <- function(input, output){   # server = function with two inputs
                  #--- CREATE NUMBER IN SERVER ---#
                  output$printvalue <- renderText({
                    
-                   paste("number x 10 = ", input$num * 10)
+                   paste("number x 10 = ", input$x * 10)
                    
                  }) # render Text end.
                  

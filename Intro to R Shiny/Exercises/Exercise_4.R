@@ -32,10 +32,7 @@ library(shiny)  # we need the function shiny installed, this loads it from the l
 
 ui <- fluidPage(    # create user interface using fluidpage function
 
-  titlePanel("More complex model"),   # title of app
-  
 
-  
   # SIDEBAR
   sidebarLayout(    # indicates layout is going to be a sidebar-layout
     
@@ -68,7 +65,6 @@ ui <- fluidPage(    # create user interface using fluidpage function
     
     mainPanel(            # open main panel
       
-      h3("Results") , 
       
       plotOutput( 
         # < insert code here > #     

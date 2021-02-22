@@ -38,6 +38,8 @@ ui <- fluidPage(    # create user interface using fluidpage function
     
     sidebarPanel( # open sidebar panel
       
+    ("Enter 3 values: "),
+      
       numericInput(inputId = "x",           # id of input, used in server
                    label = "Number X",          # label next to numeric input
                    value = 200,               # initial value
@@ -66,6 +68,8 @@ ui <- fluidPage(    # create user interface using fluidpage function
     mainPanel(            # open main panel
       
       h3("Results") , 
+      
+      ("Graph of inputs x and y"),
       
       plotOutput(outputId = "graph")
       

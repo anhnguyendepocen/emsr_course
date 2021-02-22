@@ -23,7 +23,7 @@ ui <- fluidPage(    # create user interface using fluidpage function
                    label = "Number X",          # label next to numeric input
                    value = 200,               # initial value
                    min = 0,                   # minimum value allowed
-                   max = 100000),              # maximum value allowed
+                   max = 1000),              # maximum value allowed
                    
       numericInput(inputId = "y",      # id of input, used in server
                    label = "Number Y",        # label next to numeric input

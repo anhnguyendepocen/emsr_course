@@ -20,7 +20,7 @@ library(shinythemes)
 ## NOTE: you can no longer use the button on the top-right to start the app
 ## you have to use shinyApp(ui, server), i.e. select and execute all code (Ctrl+A/CMD+A) 
 
-## b) change the title of the app to 'Sicker sicker Model in Shiny'
+## b) change the title of the app to 'Sick sicker Model in Shiny'
 
 ## c) change the labels of the inputs to 'Treatment Costs', 'PSA runs' and 'Initial age'
 
