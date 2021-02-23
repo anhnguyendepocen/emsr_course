@@ -1,0 +1,12 @@
+name: costello_example
+title: costello_example
+username:
+account: darkpeakanalytics
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 3680236
+bundleId: 4258241
+url: https://darkpeakanalytics.shinyapps.io/costello_example/
+when: 1614026132.06646
+asMultiple: FALSE
+asStatic: FALSE
