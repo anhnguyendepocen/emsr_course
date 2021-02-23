@@ -16,21 +16,22 @@ source("Markov Model/src/f_wrapper.R")
 # 1. run the wrapper function to create a set of results.
 # store these results in a data.frame called df_results
 
-df_results <- f_wrapper() # < insert code here > #
+# < insert code here > #
 
 
 # calculate incremental costs and qalys for each PSA iteration and store in a data-frame
-df_plot <- data.frame(inc_C = df_results$Cost_Trt - df_results$Cost_NoTrt,
-                      inc_Q = df_results$QALY_Trt - df_results$QALY_NoTrt)
+df_plot <- 
 
 # create a mean of the incremental costs and qalys.
-means <- data.frame(mean_inc_C = mean(df_plot$inc_C),
-                    mean_inc_Q = mean(df_plot$inc_Q))
+means <- 
 
 # create an empty plot but which is going to refer to the data.frame df_plot we just created.
-cep_plot <- ggplot(data = df_plot,
-                   aes(x = inc_Q,     # x axis incremental QALYS
-                       y = inc_C))    # y axis incremental Costs +
+cep_plot <- ggplot(
+
+  # < insert code here > #
+
+  
+) 
   
 # view the plot
 cep_plot
