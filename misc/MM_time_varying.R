@@ -175,3 +175,17 @@ lines(m_TR_tv[,"S1"],col = "red")
 lines(m_TR_tv[,"S2"],col = "orange")
 lines(m_TR_tv[,"H"], col = "green")
 
+
+
+# we can also use the super-fast C++ function Dark Peak Analytics created...
+# devtools::install_github(repo = "RobertASmith/darkpeak",ref = "main")
+library(darkpeak)
+
+# initialise trace
+m_TR_tv     <- m_TR[,] * NA
+m_TR_tv[1,] <- c(1,0,0,0)
+
+
+#
+darkpeak::ArmaTDMarkovLoop(m_TR = m_TR_tv, 
+                           a_P = a_P)
