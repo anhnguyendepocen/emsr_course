@@ -23,18 +23,21 @@ df_results <- f_wrapper() # < insert code here > #
 df_plot <- data.frame(inc_C = df_results$Cost_Trt - df_results$Cost_NoTrt,
                       inc_Q = df_results$QALY_Trt - df_results$QALY_NoTrt)
 
-# crate a mean of the incremental costs and qalys.
+# create a mean of the incremental costs and qalys.
 means <- data.frame(mean_inc_C = mean(df_plot$inc_C),
                     mean_inc_Q = mean(df_plot$inc_Q))
+
+# create an empty plot but which is going to refer to the data.frame df_plot we just created.
+cep_plot <- ggplot(data = df_plot,
+                   aes(x = inc_Q,     # x axis incremental QALYS
+                       y = inc_C))    # y axis incremental Costs +
+
+# view the plot
+cep_plot
 
 # 2. Create a simple scatter plot using ggplot2 that has inc_Q on the x axis 
 #    and inc_C on the y axis and each point representing an iteration.
 
-cep_plot <- ggplot(data = df_plot,
-               aes(x = inc_Q,     # x axis incremental QALYS
-                   y = inc_C))   # y axis incremental Costs +
-cep_plot
-  
 cep_plot <- cep_plot + 
   
   geom_point(alpha = 0.5, size = 0.7)

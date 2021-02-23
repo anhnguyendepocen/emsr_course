@@ -78,7 +78,7 @@ Note that the text can include model results. For example I could say that the I
 
 1. Your client has mentioned that their treatment cost is now £375, rather than the £200 stated in the previous report. They would like to see an identical report to that shown above, but with an updated cost-effectiveness plane and ICER.
 
-2. Your client would like to see the CEAC curve and for the insertion of a paragraph at the beginning with the inputs to the Sick-Sicker function defined. (Ensure you do this so that the entire document can be updated by one change).
+2. Your client would like to see the CEAC curve and a paragraph at the beginning with the inputs to the Sick-Sicker function defined. (Ensure you do this so that the entire document can be updated by one change).
 
 3. The decision body has changed its discount rate from 3.5% to 1.5%. Please update the entire report.
 
