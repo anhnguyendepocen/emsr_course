@@ -23,7 +23,7 @@ df_results <- f_wrapper() # < insert code here > #
 df_plot <- data.frame(inc_C = df_results$Cost_Trt - df_results$Cost_NoTrt,
                       inc_Q = df_results$QALY_Trt - df_results$QALY_NoTrt)
 
-# crate a mean of the incremental costs and qalys.
+# create a mean of the incremental costs and qalys.
 means <- data.frame(mean_inc_C = mean(df_plot$inc_C),
                     mean_inc_Q = mean(df_plot$inc_Q))
 
